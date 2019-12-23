@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request
 app = Flask(__name__)
 
-@app.route("/changetext", methods=['POST'])
+@app.route("/input", methods=['POST'])
 def changetext():
-    user = request.form['Name']
-    return render_template("HTML_Interface.html", name=user)
+    folder = request.form['foldername']
+    return render_template("HTML_Interface.html", name=folder)
 
 @app.route("/")
 def index():
