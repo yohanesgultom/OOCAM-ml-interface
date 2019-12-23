@@ -1,13 +1,5 @@
-import tensorflow as tf 
-import numpy as np
-import os
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.optimizers import RMSprop
-from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.callbacks import ModelCheckpoint
-import pickle, cv2, random
+import tensorflow as tf, numpy as np, os, pickle, cv2, random, modelHolder
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
 def generateNewTrainingData(datadir, splitRatio):
     folders = os.listdir(datadir)
@@ -56,31 +48,7 @@ def trainModel(datadir, splitRatio, epoch):
         
     allData = generateNewTrainingData(newDatadir, splitRatio)
 
-    model = Sequential()
-
-    model.add(Conv2D(32, (3,3), input_shape = allData[0].shape[1:]))
-    model.add(Activation("relu"))
-    model.add(MaxPooling2D(pool_size=(2,2)))
-
-    model.add(Conv2D(64, (3, 3)))
-    model.add(Activation("relu"))
-    model.add(MaxPooling2D(pool_size=(2,2)))
-
-    model.add(Conv2D(64, (3, 3)))
-    model.add(Activation("relu"))
-    model.add(MaxPooling2D(pool_size=(2,2)))
-
-    model.add(Conv2D(128, (3, 3)))
-    model.add(Activation("relu"))
-    model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Dropout(0.25))
-
-    model.add(Flatten())
-    model.add(Dense(128))
-    model.add(Activation("relu"))
-
-    model.add(Dense(4))
-    model.add(Activation("softmax"))
+    model = modelHolder.getModel(allData)
 
     model.compile(loss="sparse_categorical_crossentropy",
                                     optimizer="adam",
