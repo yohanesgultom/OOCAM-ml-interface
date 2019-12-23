@@ -33,18 +33,15 @@ def generateNewTrainingData(datadir, splitRatio):
 
     finalData = (np.array(trainX), np.array(trainY), np.array(testX), np.array(testY), labels)
 
+    if not os.path.exists("output"):
+        os.makedirs("output")
+
+    with open('output\\labels.dat', 'wb+') as f:
+        pickle.dump(labels, f)
+
     return finalData
 
-def trainModel(datadir, splitRatio, epoch):
-    newDatadir = ''
-
-    for i in datadir:
-        if i == '\\':
-            newDatadir += '\\\\'
-        else:
-            newDatadir += i
-
-    print(newDatadir)
+def trainModel(newDatadir, splitRatio, epoch):
         
     allData = generateNewTrainingData(newDatadir, splitRatio)
 
@@ -54,9 +51,7 @@ def trainModel(datadir, splitRatio, epoch):
                                     optimizer="adam",
                                     metrics=["accuracy"])
 
-    mc = ModelCheckpoint('model.h5', monitor='val_loss', mode='max', verbose=1, save_best_only=True)
-
-
+    mc = ModelCheckpoint('output\\model.h5', monitor='val_loss', mode='max', verbose=1, save_best_only=True)
 
     history = model.fit(x = allData[0], y = allData[1], batch_size = 30, epochs = epoch, verbose = 1, validation_data = (allData[2], allData[3]), callbacks = [mc])
 

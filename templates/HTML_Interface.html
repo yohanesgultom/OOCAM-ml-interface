@@ -3,6 +3,8 @@
 <body>
 <h1 style="text-align:center;"> OOCAM </h1>
 <hr>
+<h2> Train </h2>
+Select your images to generate a trained model.
 <form id="demo" action="http://127.0.0.1:5000/train" method="POST">
 <br>
 File: 
@@ -12,6 +14,17 @@ Split:
 Epoch: 
 <input type= "text" name ="epoch" size="5"> <br> <br>
 <input type = "submit" value ="Train">
+</form>
+
+<h2> Predict </h2>
+Select an image and a model to predict what the image is.
+
+<form id = "demo2" action = "http://127.0.0.1:5000/predict" method = "POST">
+<br>
+Model: <input type= "text" name ="modeldir" size="100"> <br><br>
+Image: <input type= "text" name ="imagedir" size="100"> <br><br>
+Labels: <input type= "text" name ="labeldir" size="100"> <br><br>
+<input type = "submit" value ="Predict">
 </form>
 </body>
 </html>
