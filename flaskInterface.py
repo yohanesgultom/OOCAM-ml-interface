@@ -1,7 +1,11 @@
-from flask import Flask, render_template, request
-import os, modelTrainScript
+from flask import Flask, render_template, request, os, modelTrainScript
 
 app = Flask(__name__)
+
+@app.route("/changetext", methods=['POST'])
+def changetext():
+    user = request.form['Name']
+    return render_template("HTML_Interface.html", name=user)
 
 @app.route("/")
 def index():
