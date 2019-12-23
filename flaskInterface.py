@@ -14,7 +14,7 @@ def train():
         split = float(request.form['split'])
         epochs = int(request.form['epoch'])
 
-        history = modelTrainScript.trainModel(folder_path, split)
+        history = modelTrainScript.trainModel(folder_path, split, epochs)
 
         val_accs = list(map(float, history['val_accuracy']))
         max_val_acc = max(val_accs)

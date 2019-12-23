@@ -43,7 +43,7 @@ def generateNewTrainingData(datadir, splitRatio):
 
     return finalData
 
-def trainModel(datadir, splitRatio):
+def trainModel(datadir, splitRatio, epoch):
     newDatadir = ''
 
     for i in datadir:
@@ -90,7 +90,7 @@ def trainModel(datadir, splitRatio):
 
 
 
-    history = model.fit(x = allData[0], y = allData[1], batch_size = 30, epochs = 1, verbose = 1, validation_data = (allData[2], allData[3]), callbacks = [mc])
+    history = model.fit(x = allData[0], y = allData[1], batch_size = 30, epochs = epoch, verbose = 1, validation_data = (allData[2], allData[3]), callbacks = [mc])
 
     return history.history
 
