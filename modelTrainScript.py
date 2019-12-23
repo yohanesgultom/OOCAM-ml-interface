@@ -84,14 +84,14 @@ def trainModel(datadir, splitRatio):
 
     model.compile(loss="sparse_categorical_crossentropy",
                                     optimizer="adam",
-                                    metrics=["accuracy", "val_acc"])
+                                    metrics=["accuracy"])
 
-    mc = ModelCheckpoint('model.h5', monitor='val_acc', mode='max', verbose=1, save_best_only=True)
+    mc = ModelCheckpoint('model.h5', monitor='val_loss', mode='max', verbose=1, save_best_only=True)
 
 
 
-    model.fit(x = allData[0], y = allData[1], batch_size = 30, epochs = 10, verbose = 1, validation_data = (allData[2], allData[3]), callbacks = [mc])
+    history = model.fit(x = allData[0], y = allData[1], batch_size = 30, epochs = 1, verbose = 1, validation_data = (allData[2], allData[3]), callbacks = [mc])
 
-trainModel(r"C:\Users\admin\Downloads\ResizedMantaImages", 0.8)
+    return history.history
 
     

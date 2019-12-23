@@ -1,12 +1,7 @@
 from flask import Flask, render_template, request
-import os
+import os, modelTrainScript
 
 app = Flask(__name__)
-
-@app.route("/input", methods=['POST'])
-def changetext():
-    folder = request.form['foldername']
-    return render_template("HTML_Interface.html", name=folder)
 
 @app.route("/")
 def index():
@@ -15,7 +10,12 @@ def index():
 @app.route("/train", methods = ["POST", "GET"])
 def train():
     if request.method == "POST":
-        folder_path = request.form['folder_path']
+        folder_path = request.form['foldername']
+        split = float(request.form['split'])
+
+        history = modelTrainScript(folder_path, split)
+
+        return history
         
 
 if __name__ == '__main__':
