@@ -3,10 +3,11 @@ import os
 
 app = Flask(__name__)
 
-@app.route("/input", methods=['POST'])
+@app.route("/train", methods=['POST'])
 def changetext():
     folder = request.form['foldername']
-    return render_template("HTML_Interface.html", name=folder)
+    split = request.form['split']
+    return render_template("HTML_Interface.html")
 
 @app.route("/")
 def index():
@@ -16,7 +17,7 @@ def index():
 def train():
     if request.method == "POST":
         folder_path = request.form['folder_path']
-        
+
 
 if __name__ == '__main__':
     app.run(debug = True)
