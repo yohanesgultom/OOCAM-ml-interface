@@ -7,8 +7,8 @@ For using the current interface, please follow these steps -
     (i) Navigate to the directory where the repo has been cloned  
     (ii) Double click the installer.bat file  
 3. Open Web Interface:  
-    (i) In the same directory, open command line and run 'python flaskInterface.py'  
-    (ii) visit localhost:5000/ by copying and pasting the url shown on command line, on the google chrome browser  
+    (i) Open the 'flaskInterface.py' file  
+    (ii) Open the 'run.html' file    
 4. To Train Model :  
     (i) In the first text field (File:), enter the directory where the images to be trained are located  
         Change single backslashes to double backslashes  
@@ -17,7 +17,12 @@ For using the current interface, please follow these steps -
         0.8 would mean 80% of the images are for train, 20% for test  
     (iii) In the third text field (Epoch:), enter number of epochs: no. of complete presentations of dataset to be learned by machine  
     (iv) Click Train and give it a little time to process  
-        The model will be generated (model.h5) and placed into the same folder  
+        The model (model.h5) and the labels file (labels.dat) will be generated and placed into the 'output' folder    
         The maximum validation accuracy achieved shall be shown on a new webpage  
-5. To Predict an Image : (to be completed)  
-
+5. To Predict an Image :
+      (i) In the first text field (Model:), enter the location of the model.h5 file  
+      (ii) In the second text field (Image:), enter the location of the image (jpg) file that needs to be predicted  
+      (iii) In the third text field (Labels:), enter the location of the labels.dat file.  
+      Note: Change single backslashes to double backslashes  
+      E.g. C:\\\Users\\\Dhruv Aggarwal\\\OOCAM-ml-interface\\output\\\label.dat     
+      (iv) The prediction among the label types will be displayed on a new webpage    
