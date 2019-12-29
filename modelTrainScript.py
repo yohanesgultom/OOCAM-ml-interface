@@ -3,7 +3,6 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
 def generateNewTrainingData(datadir, splitRatio):
     folders = os.listdir(datadir)
-    print(folders)
     imageCount = len(os.listdir((datadir + "\\" + folders[0])))
     
     trainImageCount = int(imageCount * splitRatio)

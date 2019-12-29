@@ -3,17 +3,6 @@ import os, modelTrainScript, modelPredict
 
 app = Flask(__name__)
 
-def processDirectory(datadir):
-    newDatadir = ''
-
-    for i in datadir:
-        if i == '\\':
-            newDatadir += '\\\\'
-        else:
-            newDatadir += i
-
-    return newDatadir
-
 @app.route("/")
 def index():
     return render_template("HTML_Interface.html")
@@ -21,7 +10,7 @@ def index():
 @app.route("/train", methods = ["POST", "GET"])
 def train():
     if request.method == "POST":
-        folder_path = processDirectory(request.form['foldername'])
+        folder_path = request.form['foldername']
         split = float(request.form['split'])
         epochs = int(request.form['epoch'])
 
@@ -34,9 +23,9 @@ def train():
 @app.route("/predict", methods = ["POST", "GET"])
 def predict():
     if request.method == "POST":
-        modeldir = processDirectory(request.form['modeldir'])
-        imagedir = processDirectory(request.form['imagedir'])
-        labeldir = processDirectory(request.form['labeldir'])
+        modeldir = request.form['modeldir']
+        imagedir = request.form['imagedir']
+        labeldir = request.form['labeldir']
 
         prediction = modelPredict.predict(modeldir, imagedir, labeldir)
 
