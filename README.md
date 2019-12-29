@@ -9,7 +9,7 @@ For using the current interface, please follow these steps -
 3. Open Web Interface:  
     (i) Open the 'flaskInterface.py' file  
     (ii) Open the 'run.html' file    
-4. To Train Model :  
+4. To train model:  
     (i) In the first text field (File:), enter the directory where the images to be trained are located  
         Change single backslashes to double backslashes  
         E.g. : C:\\\Users\\\Dhruv Aggarwal\\\Downloads\\\ResizedMantaImages  
@@ -19,7 +19,7 @@ For using the current interface, please follow these steps -
     (iv) Click Train and give it a little time to process  
          The model (model.h5) and the labels file (labels.dat) will be generated and placed into the 'output' folder    
          The maximum validation accuracy achieved shall be shown on a new webpage  
-5. To Predict an Image :  
+5. To predict an image:  
       (i) In the first text field (Model:), enter the location of the model.h5 file  
       (ii) In the second text field (Image:), enter the location of the image (jpg) file that needs to be predicted  
       (iii) In the third text field (Labels:), enter the location of the labels.dat file.  
