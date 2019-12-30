@@ -28,4 +28,4 @@ def getAllPredictImages(directory):
 
     images = [cv2.imread(os.path.join(directory, "images", file)) for file in allFiles]
     
-    return np.array(images, dtype = 'float32')
+    return np.array(images)
