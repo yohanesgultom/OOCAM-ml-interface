@@ -1,48 +1,42 @@
-import tensorflow as tf, numpy as np, os, pickle, cv2, random, modelHolder
+import tensorflow as tf, numpy as np, os, pickle, cv2, random, modelHolder, imageUploadUtils, shutil
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.applications.xception import preprocess_input, Xception
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
-def generateNewTrainingData(datadir, splitRatio):
-    folders = os.listdir(datadir)
-    imageCount = len(os.listdir((datadir + "\\" + folders[0])))
+def generateNewTrainingData(splitRatio):
+    images, labels, classes = imageUploadUtils.getAllTrainImages('temp')
+    print(images[:2], labels[:2], classes)
+
+    trainx, testx, trainy, testy = train_test_split(images, labels, test_size = 1 - splitRatio, stratify = labels)
     
-    trainImageCount = int(imageCount * splitRatio)
+    xc = Xception(include_top = False, weights = 'imagenet', input_shape = trainx[0].shape)
+    
+    trainx = np.array(trainx)
+    testx = np.array(testx)
 
-    labels = dict((ind, breed) for ind, breed in enumerate(folders))
+    trainx = preprocess_input(trainx)
+    testx = preprocess_input(testx)
+    trainx = xc.predict(trainx)
+    testx = xc.predict(testx)
 
-    trainX = []
-    trainY = []
+    print(f"{len(trainx)} images have been collected for training.")
+    print(f"{len(testx)} images have been collected for testing.")
+    print(f"is data valid? {len(trainx) == len(trainy) and len(testx) == len(testy)}")
 
-    testX = []
-    testY = []
+    finaldata = (trainx, np.array(trainy), testx, np.array(testy))
 
-    for ind, folder in enumerate(folders):
-        folderImages = [cv2.imread(datadir + "\\" + folder + "\\" + folder + str(i) + ".jpg") for i in range(imageCount)]
+    if os.path.exists("output"):
+        shutil.rmtree("output")
 
-        random.shuffle(folderImages)
+    os.makedirs("output")
 
-        trainX.extend(folderImages[:trainImageCount])
-        testX.extend(folderImages[trainImageCount:])
+    with open(os.path.join('output', 'labels.dat'), 'wb+') as f:
+        pickle.dump(classes, f)
 
-        trainY.extend([ind for _ in range(trainImageCount)])
-        testY.extend([ind for _ in range(imageCount - trainImageCount)])
-
-    print(f"{len(trainX)} images have been collected for training.")
-    print(f"{len(testX)} images have been collected for testing.")
-    print(f"Is data valid? {len(trainX) == len(trainY) and len(testX) == len(testY)}")
-
-    finalData = (np.array(trainX), np.array(trainY), np.array(testX), np.array(testY), labels)
-
-    if not os.path.exists("output"):
-        os.makedirs("output")
-
-    with open('output\\labels.dat', 'wb+') as f:
-        pickle.dump(labels, f)
-
-    return finalData
-
-def trainModel(newDatadir, splitRatio, epoch):
-        
-    allData = generateNewTrainingData(newDatadir, splitRatio)
+    return finaldata
+    
+def trainModel(splitRatio, epoch):
+    allData = generateNewTrainingData(splitRatio)
 
     model = modelHolder.getModel(allData)
 
@@ -50,10 +44,8 @@ def trainModel(newDatadir, splitRatio, epoch):
                                     optimizer="adam",
                                     metrics=["accuracy"])
 
-    mc = ModelCheckpoint('output\\model.h5', monitor='val_loss', mode='max', verbose=1, save_best_only=True)
+    mc = ModelCheckpoint(os.path.join('output', 'model.h5'), monitor='val_loss', mode='auto', verbose=1, save_best_only=True)
 
-    history = model.fit(x = allData[0], y = allData[1], batch_size = 30, epochs = epoch, verbose = 1, validation_data = (allData[2], allData[3]), callbacks = [mc])
+    history = model.fit(x = allData[0], y = allData[1], batch_size = 3, epochs = epoch, verbose = 1, validation_data = (allData[2], allData[3]), callbacks = [mc])
 
     return history.history
-
-    
