@@ -11,7 +11,7 @@ For using the current interface, please follow these steps -
     (ii) Open the 'run.html' file    
 4. To train model:  
     (i) First, select the folder where all the images for training are locating with the file selector.  
-        File name format: <class_name><image_number>.<jpg|png|jpeg>, eg: DotManta34.jpg
+        File name format: <class_name><image_number>.<jpg|png|jpeg>, eg: DotManta34.jpg  
     (ii) In the second text field (Split:), enter the split value : a float value between 0 and 1  
          0.8 would mean 80% of the images are for train, 20% for test  
     (iii) In the third text field (Epoch:), enter number of epochs: no. of complete presentations of dataset to be learned by machine  
