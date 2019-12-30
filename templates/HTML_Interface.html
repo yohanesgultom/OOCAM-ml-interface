@@ -5,10 +5,10 @@
 <hr>
 <h2> Train </h2>
 Select your images to generate a trained model.
-<form id="demo" action="http://127.0.0.1:5000/train" method="POST">
+<form id="demo" action="http://127.0.0.1:5000/train" enctype = "multipart/form-data" method="POST">
 <br>
 File: 
-<input type= "text" name ="foldername" size="100"> <br><br>
+<input type= "file" name ="foldername" size="100" webkitdirectory multiple/> <br><br>
 Split: 
 <input type= "text" name ="split" size="5"> <br> <br>
 Epoch: 
