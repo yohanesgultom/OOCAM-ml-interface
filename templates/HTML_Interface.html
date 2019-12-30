@@ -34,9 +34,10 @@
         <pre>
   Instructions:
 
-  (i)   In the first text field (File:), enter the directory where the images
-        to be trained are located
-        E.g. : C:\\Users\\Dhruv Aggarwal\\Downloads\\ResizedMantaImages
+  (i)   In the first text field (File:), select the folder where all the
+        images for training are located with the file selector.
+       <xmp> File name format: <class_name><image_number>.<jpg|png|jpeg>, </xmp>
+        eg: DotManta34.jpg
   (ii)  In the second text field (Split:), enter the split value : a float
         value between 0 and 1
         0.8 would mean 80% of the images are for train, 20% for test
@@ -48,7 +49,7 @@
         accuracy achieved shall be shown on a new webpage
 <form id="demo" action="http://127.0.0.1:5000/train" enctype = "multipart/form-data" method="POST">
   <br>
-  File:  <input type= "file" name ="foldername" webkitdirectory multiple/> <br>
+  File:  <input type= "file" size ="60" name ="foldername" webkitdirectory multiple/> <br>
   Split: <input type= "text" name ="split" size="5"> <br>
   Epoch: <input type= "text" name ="epoch" size="5">
 <p style="text-align:center">
@@ -63,16 +64,17 @@
 
   (i)   In the first text field (Model:), enter the location of the model.h5
         file
-  (ii)  In the second text field (Image:), enter the location of the image
-        (jpg) file that needs to be predicted
+  (ii)  In the second text field (Image:), enter the location of the folder
+        containing the image files that needs to be predicted
   (iii) In the third text field (Labels:), enter the location of the
         labels.dat file
-  (iv)  The prediction will be displayed on a new webpage
+  (iv)  The images would be sorted and stored in the 'predictions' folder in
+        the main directory of the repo
 <form id = "demo2" action = "http://127.0.0.1:5000/predict" enctype = "multipart/form-data" method = "POST">
 <br>
-  Model:  <input type= "file"  name ="modeldir"> <br>
-  Image:  <input type= "file" name ="imagedir" webkitdirectory multiple/> <br>
-  Labels: <input type= "file" name ="labeldir"> <br>
+  Model:  <input type= "file"  size="60" name ="modeldir"> <br>
+  Image:  <input type= "file" size="60" name ="imagedir" webkitdirectory multiple/> <br>
+  Labels: <input type= "file" size="60" name ="labeldir"> <br>
 <p style="text-align:center">
 <input type = "submit" value ="Predict"> </p>
 </form>

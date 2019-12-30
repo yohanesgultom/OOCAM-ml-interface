@@ -10,7 +10,7 @@ For using the current interface, please follow these steps -
     (i) Open the 'flaskInterface.py' file  
     (ii) Open the 'run.html' file    
 4. To train model:  
-    (i) First, select the folder where all the images for training are locating with the file selector.  
+    (i) In the first text field (File:), select the folder where all the images for training are located with the file selector.    
         File name format: <class_name><image_number>.<jpg|png|jpeg>, eg: DotManta34.jpg  
     (ii) In the second text field (Split:), enter the split value : a float value between 0 and 1  
          0.8 would mean 80% of the images are for train, 20% for test  
@@ -20,6 +20,6 @@ For using the current interface, please follow these steps -
          The maximum validation accuracy achieved shall be shown on a new webpage  
 5. To predict an image:  
       (i) In the first text field (Model:), enter the location of the model.h5 file  
-      (ii) In the second text field (Image:), enter the location of the image (jpg) file that needs to be predicted  
-      (iii) In the third text field (Labels:), enter the location of the labels.dat file.   
-      (iv) The prediction among the label types will be displayed on a new webpage    
+      (ii) In the second text field (Images:), enter the location of the folder containing the image files that needs to be predicted    
+      (iii) In the third text field (Labels:), enter the location of the labels.dat file   
+      (iv) The images would be sorted and stored in the 'predictions' folder in the main directory of the repo        
