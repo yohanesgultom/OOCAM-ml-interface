@@ -15,6 +15,10 @@ def getAllImages(directory):
 
         labels.append(matches[0][1])
 
-    classes = set(labels)
+    classes = list(set(labels))
+
+    labels = [classes.index(l) for l in labels]
+
+    classes = dict((i, v) for i, v in enumerate(classes))
 
     return images, labels, classes
