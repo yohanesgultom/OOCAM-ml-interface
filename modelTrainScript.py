@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
 def generateNewTrainingData(splitRatio):
-    images, labels, classes = imageUploadUtils.getAllImages('temp')
+    images, labels, classes = imageUploadUtils.getAllTrainImages('temp')
     print(images[:2], labels[:2], classes)
 
     trainx, testx, trainy, testy = train_test_split(images, labels, test_size = 1 - splitRatio, stratify = labels)

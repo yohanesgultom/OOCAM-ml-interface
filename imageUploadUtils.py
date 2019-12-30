@@ -1,6 +1,6 @@
 import cv2, numpy, os, re
 
-def getAllImages(directory):
+def getAllTrainImages(directory):
     allFiles = os.listdir(directory)
     labels = []
     
