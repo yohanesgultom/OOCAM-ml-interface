@@ -1,6 +1,6 @@
-import cv2, numpy, os, re
+import cv2, numpy as np, os, re
 
-def getAllImages(directory):
+def getAllTrainImages(directory):
     allFiles = os.listdir(directory)
     labels = []
     
@@ -22,3 +22,10 @@ def getAllImages(directory):
     classes = dict((i, v) for i, v in enumerate(classes))
 
     return images, labels, classes
+
+def getAllPredictImages(directory):
+    allFiles = os.listdir(os.path.join(directory, "images"))
+
+    images = [cv2.imread(os.path.join(directory, "images", file)) for file in allFiles]
+    
+    return np.array(images, dtype = 'float32')

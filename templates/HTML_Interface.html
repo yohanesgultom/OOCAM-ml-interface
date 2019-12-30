@@ -8,7 +8,7 @@ Select your images to generate a trained model.
 <form id="demo" action="http://127.0.0.1:5000/train" enctype = "multipart/form-data" method="POST">
 <br>
 File: 
-<input type= "file" name ="foldername" size="100" webkitdirectory multiple/> <br><br>
+<input type= "file" name ="foldername" webkitdirectory multiple/> <br><br>
 Split: 
 <input type= "text" name ="split" size="5"> <br> <br>
 Epoch: 
@@ -19,11 +19,11 @@ Epoch:
 <h2> Predict </h2>
 Select an image and a model to predict what the image is.
 
-<form id = "demo2" action = "http://127.0.0.1:5000/predict" method = "POST">
+<form id = "demo2" action = "http://127.0.0.1:5000/predict" enctype = "multipart/form-data" method = "POST">
 <br>
-Model: <input type= "text" name ="modeldir" size="100"> <br><br>
-Image: <input type= "text" name ="imagedir" size="100"> <br><br>
-Labels: <input type= "text" name ="labeldir" size="100"> <br><br>
+Model: <input type= "file" name ="modeldir"> <br><br>
+Images: <input type= "file" name ="imagedir" webkitdirectory multiple/> <br><br>
+Labels: <input type= "file" name ="labeldir"> <br><br>
 <input type = "submit" value ="Predict">
 </form>
 </body>

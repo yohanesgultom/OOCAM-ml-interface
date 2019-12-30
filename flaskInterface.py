@@ -30,14 +30,25 @@ def train():
 @app.route("/predict", methods = ["POST", "GET"])
 def predict():
     if request.method == "POST":
-        print(request.form)
-        modeldir = request.form['modeldir']
-        imagedir = request.form['imagedir']
-        labeldir = request.form['labeldir']
+        os.mkdir('temp')
+        os.mkdir(os.path.join("temp", "model"))
+        os.mkdir(os.path.join("temp", "label"))
+        os.mkdir(os.path.join("temp", "images"))
 
-        prediction = modelPredict.predict(modeldir, imagedir, labeldir)
+        model = request.files['modeldir']
+        label = request.files['labeldir']
 
-        return f"Prediction: {prediction}"
+        model.save(os.path.join("temp", "model", secure_filename(model.filename)))
+        label.save(os.path.join("temp", "label", secure_filename(label.filename)))
+
+        for f in request.files.getlist('imagedir'):
+            f.save(os.path.join('temp', 'images', secure_filename(f.filename)))
+
+        modelPredict.predict()
+
+        shutil.rmtree('temp')
+
+        return f"Predictions were made and stored in the 'predictions' folder."
 
 if __name__ == '__main__':
     app.run(debug = True)

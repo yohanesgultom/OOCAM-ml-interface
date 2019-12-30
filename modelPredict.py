@@ -1,18 +1,28 @@
 from tensorflow.keras.models import load_model
-import pickle, cv2, numpy as np
+import pickle, cv2, numpy as np, imageUploadUtils, shutil, os
 
-def predict(modeldir, imagedir, labeldir):
-    model = load_model(modeldir)
+def predict():
+    if os.path.exists("predictions"):
+        shutil.rmtree("predictions")
 
-    img = cv2.imread(imagedir)
+    os.mkdir("predictions")
 
-    x = np.array([img], dtype = 'float32')
+    model = load_model(os.path.join("temp", "model", os.listdir(os.path.join("temp", "model"))[0]))
 
-    ys = model.predict(x)
+    images = imageUploadUtils.getAllPredictImages("temp")
 
-    y = ys[0]
+    ys = model.predict(images)
 
-    with open(labeldir, 'rb') as f:
+    with open(os.path.join("temp", "label", os.listdir(os.path.join("temp", "label"))[0]), 'rb') as f:
         labels = pickle.load(f)
-    print(y)
-    return labels[np.argmax(y)]
+        
+    counters = dict((v, 0) for v in labels.values())
+
+    for category in counters.keys():
+        os.mkdir(os.path.join("predictions", category))
+
+    for i, y in enumerate(ys):
+        category = labels[np.argmax(y)]
+        cv2.imwrite(os.path.join("predictions", category, str(counters[category]) + ".jpg"), images[i])
+
+        counters[category] += 1
