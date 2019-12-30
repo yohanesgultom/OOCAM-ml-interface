@@ -1,30 +1,85 @@
 <!DOCTYPE html>
 <html>
-<body>
-<h1 style="text-align:center;"> OOCAM </h1>
-<hr>
-<h2> Train </h2>
-Select your images to generate a trained model.
-<form id="demo" action="http://127.0.0.1:5000/train" enctype = "multipart/form-data" method="POST">
+<head>
+<title> OOCAM ML Interface </title>
+<style>
+.column {
+  width: 47.5%;
+  padding: 10px;
+  height: 500px;
+  border-color:white;
+  border-style:solid;
+  border-radius: 15px;
+  border-width: 3px;
+  color:whitesmoke;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+</head>
+<body style="background-color:#222329">
+<section style="background-color:#222930 ;border-width:3px ;border-style:solid ;border-color:white;border-radius:15px" >
+<h1 style="text-align:center;color:#4EB1BA;font-size:40px; font-weight:bold"> Open Ocean Camera Interface </h1>
+<h4 style="text-align:center;color:#4EB1BA; font-family:verdana "> Powered by Open Ocean Engineering Ltd. </h4>
+</section>
 <br>
-File: 
-<input type= "file" name ="foldername" webkitdirectory multiple/> <br><br>
-Split: 
-<input type= "text" name ="split" size="5"> <br> <br>
-Epoch: 
-<input type= "text" name ="epoch" size="5"> <br> <br>
-<input type = "submit" value ="Train">
+<div class="row">
+  <div class="column" style="background-color:#222930; float:left";>
+    <h2 style="text-align:center; color:#4EB1BA"> Train </h2>
+        <pre>
+  Instructions:
+
+  (i)   In the first text field (File:), select the folder where all the
+        images for training are located with the file selector.
+       <xmp> File name format: <class_name><image_number>.<jpg|png|jpeg>, </xmp>
+        eg: DotManta34.jpg
+  (ii)  In the second text field (Split:), enter the split value : a float
+        value between 0 and 1
+        0.8 would mean 80% of the images are for train, 20% for test
+  (iii) In the third text field (Epoch:), enter number of epochs: no. of
+        complete presentations of dataset to be learned by machine
+  (iv)  Click Train and give it a little time to process
+        The model (model.h5) and the labels file (labels.dat) will be
+        generated and placed into the 'output' folder. The maximum validation
+        accuracy achieved shall be shown on a new webpage
+<form id="demo" action="http://127.0.0.1:5000/train" enctype = "multipart/form-data" method="POST">
+  <br>
+  File:  <input type= "file" size ="60" name ="foldername" webkitdirectory multiple/> <br>
+  Split: <input type= "text" name ="split" size="5"> <br>
+  Epoch: <input type= "text" name ="epoch" size="5">
+<p style="text-align:center">
+<input type = "submit" value ="Train"> </p>
 </form>
+</pre>
+  </div>
+  <div class="column" style="background-color:#222930; float:right";>
+    <h2 style="text-align:center; color:#4EB1BA"> Predict </h2>
+    <pre>
+  Instructions:
 
-<h2> Predict </h2>
-Select an image and a model to predict what the image is.
-
+  (i)   In the first text field (Model:), enter the location of the model.h5
+        file
+  (ii)  In the second text field (Image:), enter the location of the folder
+        containing the image files that needs to be predicted
+  (iii) In the third text field (Labels:), enter the location of the
+        labels.dat file
+  (iv)  The images would be sorted and stored in the 'predictions' folder in
+        the main directory of the repo
 <form id = "demo2" action = "http://127.0.0.1:5000/predict" enctype = "multipart/form-data" method = "POST">
 <br>
-Model: <input type= "file" name ="modeldir"> <br><br>
-Images: <input type= "file" name ="imagedir" webkitdirectory multiple/> <br><br>
-Labels: <input type= "file" name ="labeldir"> <br><br>
-<input type = "submit" value ="Predict">
+  Model:  <input type= "file"  size="60" name ="modeldir"> <br>
+  Image:  <input type= "file" size="60" name ="imagedir" webkitdirectory multiple/> <br>
+  Labels: <input type= "file" size="60" name ="labeldir"> <br>
+<p style="text-align:center">
+<input type = "submit" value ="Predict"> </p>
 </form>
-</body>
-</html>
+</pre>
+  </div>
+</div>
+    </body>
+    </html>
