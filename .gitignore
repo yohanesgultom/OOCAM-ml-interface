@@ -1,5 +1,6 @@
 *~
 temp
+*.swp
 predictions
 env
 
