@@ -18,6 +18,7 @@ def train():
         split = float(request.form['split'])
         epochs = int(request.form['epoch'])
 
+        print("Beginning handover to training script.")
         history = modelTrainScript.trainModel(split, epochs)
 
         val_accs = list(map(float, history['val_accuracy']))
@@ -44,6 +45,7 @@ def predict():
         for f in request.files.getlist('imagedir'):
             f.save(os.path.join('temp', 'images', secure_filename(f.filename)))
 
+        print("Beginning handover to prediction script.")
         modelPredict.predict()
 
         shutil.rmtree('temp')

@@ -8,6 +8,7 @@ def getAllTrainImages(directory):
 
     images = []
 
+    print("Beginning image read and resize process.")
     for file in allFiles:
         matches = query.findall(file)
 
@@ -23,6 +24,7 @@ def getAllTrainImages(directory):
 
     classes = dict((i, v) for i, v in enumerate(classes))
 
+    print("Read and resize complete.")
     return images, labels, classes
 
 def getAllPredictImages(directory):
@@ -30,9 +32,11 @@ def getAllPredictImages(directory):
 
     images = []
 
+    print("Beginning image read and resize process.")
     for file in allFiles:
         img = cv2.imread(os.path.join(directory, "images", file)) 
         resized = cv2.resize(img, (256, 256))
         images.append(resized)
     
+    print("Read and resize complete.")
     return np.array(images)
