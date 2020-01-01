@@ -11,6 +11,8 @@ def index():
 @app.route("/train", methods = ["POST", "GET"])
 def train():
     if request.method == "POST":
+        if os.path.exists('temp'):
+            shutil.rmtree('temp')
         os.mkdir('temp')
         for f in request.files.getlist('foldername'):
             fil = secure_filename(f.filename)
@@ -31,6 +33,8 @@ def train():
 @app.route("/predict", methods = ["POST", "GET"])
 def predict():
     if request.method == "POST":
+        if os.path.exists('temp'):
+            shutil.rmtree('temp')
         os.mkdir('temp')
         os.mkdir(os.path.join("temp", "model"))
         os.mkdir(os.path.join("temp", "label"))
