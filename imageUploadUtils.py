@@ -11,7 +11,9 @@ def getAllTrainImages(directory):
     for file in allFiles:
         matches = query.findall(file)
 
-        images.append(cv2.imread(os.path.join(directory, file)))
+        img = cv2.imread(os.path.join(directory, file))
+        resized = cv2.resize(img, (256, 256))
+        images.append(resized)
 
         labels.append(matches[0][1])
 
@@ -26,6 +28,11 @@ def getAllTrainImages(directory):
 def getAllPredictImages(directory):
     allFiles = os.listdir(os.path.join(directory, "images"))
 
-    images = [cv2.imread(os.path.join(directory, "images", file)) for file in allFiles]
+    images = []
+
+    for file in allFiles:
+        img = cv2.imread(os.path.join(directory, "images", file)) 
+        resized = cv2.resize(img, (256, 256))
+        images.append(resized)
     
     return np.array(images)

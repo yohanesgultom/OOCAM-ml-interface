@@ -16,8 +16,8 @@ def generateNewTrainingData(splitRatio):
 
     trainx = preprocess_input(trainx)
     testx = preprocess_input(testx)
-    trainx = xc.predict(trainx)
-    testx = xc.predict(testx)
+    trainx = xc.predict(trainx, verbose = 1)
+    testx = xc.predict(testx, verbose = 1)
 
     print(f"{len(trainx)} images have been collected for training.")
     print(f"{len(testx)} images have been collected for testing.")
