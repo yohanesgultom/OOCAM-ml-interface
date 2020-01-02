@@ -1,10 +1,10 @@
 from tensorflow.keras.applications.xception import preprocess_input, Xception
 from tensorflow.keras.models import load_model
-import pickle, cv2, numpy as np, imageUploadUtils, shutil, os
+import pickle, cv2, numpy as np, imageUploadUtils, subprocess, os
 
 def predict():
     if os.path.exists("predictions"):
-        shutil.rmtree("predictions")
+        subprocess.run("rmdir /s /q predictions")
 
     os.mkdir("predictions")
 

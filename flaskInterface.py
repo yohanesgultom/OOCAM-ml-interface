@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-import os, modelTrainScript, modelPredict, shutil
+import os, modelTrainScript, modelPredict, subprocess
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -12,7 +12,7 @@ def index():
 def train():
     if request.method == "POST":
         if os.path.exists('temp'):
-            shutil.rmtree('temp')
+            subprocess.run("rmdir /s /q temp")
         os.mkdir('temp')
         for f in request.files.getlist('foldername'):
             fil = secure_filename(f.filename)
@@ -26,7 +26,7 @@ def train():
         val_accs = list(map(float, history['val_accuracy']))
         max_val_acc = max(val_accs)
         
-        shutil.rmtree('temp')
+        subprocess.run("rmdir /s /q temp")
 
         return f"Maximum validation accuracy: {max_val_acc * 100:.3f}%. Your model and labels were saved in the 'output' folder."
         
@@ -34,7 +34,7 @@ def train():
 def predict():
     if request.method == "POST":
         if os.path.exists('temp'):
-            shutil.rmtree('temp')
+            subprocess.run("rmdir /s /q temp")
         os.mkdir('temp')
         os.mkdir(os.path.join("temp", "model"))
         os.mkdir(os.path.join("temp", "label"))
@@ -52,7 +52,7 @@ def predict():
         print("Beginning handover to prediction script.")
         modelPredict.predict()
 
-        shutil.rmtree('temp')
+        subprocess.run("rmdir /s /q temp")
 
         return f"Predictions were made and stored in the 'predictions' folder."
 
