@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-import os, modelTrainScript, modelPredict, shutil
+import os, modelTrainScript, modelPredict, directoryUtils
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -11,6 +11,8 @@ def index():
 @app.route("/train", methods = ["POST", "GET"])
 def train():
     if request.method == "POST":
+        if os.path.exists('temp'):
+            directoryUtils.rmtree("temp")
         os.mkdir('temp')
         for f in request.files.getlist('foldername'):
             fil = secure_filename(f.filename)
@@ -18,18 +20,21 @@ def train():
         split = float(request.form['split'])
         epochs = int(request.form['epoch'])
 
+        print("Beginning handover to training script.")
         history = modelTrainScript.trainModel(split, epochs)
 
         val_accs = list(map(float, history['val_accuracy']))
         max_val_acc = max(val_accs)
         
-        shutil.rmtree('temp')
+        directoryUtils.rmtree("temp")
 
         return f"Maximum validation accuracy: {max_val_acc * 100:.3f}%. Your model and labels were saved in the 'output' folder."
         
 @app.route("/predict", methods = ["POST", "GET"])
 def predict():
     if request.method == "POST":
+        if os.path.exists('temp'):
+            directoryUtils.rmtree("temp")
         os.mkdir('temp')
         os.mkdir(os.path.join("temp", "model"))
         os.mkdir(os.path.join("temp", "label"))
@@ -44,9 +49,10 @@ def predict():
         for f in request.files.getlist('imagedir'):
             f.save(os.path.join('temp', 'images', secure_filename(f.filename)))
 
+        print("Beginning handover to prediction script.")
         modelPredict.predict()
 
-        shutil.rmtree('temp')
+        directoryUtils.rmtree("temp")
 
         return f"Predictions were made and stored in the 'predictions' folder."
 
