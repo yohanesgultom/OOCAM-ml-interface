@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-import os, modelTrainScript, modelPredict, directoryUtils
+import os, modelTrain, modelPredict, directoryUtils
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -21,7 +21,7 @@ def train():
         epochs = int(request.form['epoch'])
 
         print("Beginning handover to training script.")
-        history = modelTrainScript.trainModel(split, epochs)
+        history = modelTrain.trainModel(split, epochs)
 
         val_accs = list(map(float, history['val_accuracy']))
         max_val_acc = max(val_accs)
