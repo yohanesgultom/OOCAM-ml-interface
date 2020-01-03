@@ -1,4 +1,4 @@
-import tensorflow as tf, numpy as np, os, pickle, cv2, random, modelHolder, imageUploadUtils, subprocess
+import tensorflow as tf, numpy as np, os, pickle, cv2, random, modelHolder, imageUploadUtils, directoryUtils
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.applications.xception import preprocess_input, Xception
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
@@ -34,7 +34,7 @@ def generateNewTrainingData(splitRatio):
     finaldata = (trainx, np.array(trainy), testx, np.array(testy))
 
     if os.path.exists("output"):
-        subprocess.run("rmdir /s /q output")
+        directoryUtils.rmtree("output")
 
     os.makedirs("output")
 
