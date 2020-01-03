@@ -54,10 +54,33 @@ def trainModel(splitRatio, epoch):
                                     optimizer="adam",
                                     metrics=["accuracy"])
 
-    mc = ModelCheckpoint(os.path.join('output', 'model.h5'), monitor='val_loss', mode='auto', verbose=1, save_best_only=True)
+    filename_loss = os.path.join('output', 'min_loss_{val_loss:.3f}_{val_accuracy:.3f}.h5')
+    mc_loss = ModelCheckpoint((filename_loss), monitor='val_loss', mode='auto', verbose=1, save_best_only=True)
+
+    filename_acc = os.path.join('output', 'max_acc_{val_loss:.3f}_{val_accuracy:.3f}.h5')
+    mc_acc = ModelCheckpoint((filename_acc), monitor='val_accuracy', mode='auto', verbose=1, save_best_only=True)
 
     print("Beginning training.")
-    history = model.fit(x = allData[0], y = allData[1], batch_size = 3, epochs = epoch, verbose = 1, validation_data = (allData[2], allData[3]), callbacks = [mc])
+    history = model.fit(x = allData[0], y = allData[1], batch_size = 3, epochs = epoch, verbose = 1, validation_data = (allData[2], allData[3]), callbacks = [mc_loss, mc_acc])
+
+    loss_models = []
+    accuracy_models = []
+    
+    for file in os.listdir("output"):
+        if file.endswith(".h5"):
+            if file.startswith("min_loss"):
+                loss_models.append(os.path.join("output", file))
+            else:
+                accuracy_models.append(os.path.join("output", file))
+    
+    loss_models.sort(key = os.path.getmtime, reverse = True)
+    accuracy_models.sort(key = os.path.getmtime, reverse = True)
+
+    for file in loss_models[min(3, len(loss_models)):]:
+        os.remove(file)
+
+    for file in accuracy_models[min(3, len(accuracy_models)):]:
+        os.remove(file)
 
     print("Training complete.")
     return history.history
