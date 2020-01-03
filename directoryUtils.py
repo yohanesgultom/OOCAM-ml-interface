@@ -7,5 +7,5 @@ def rmtree(dir):
             os.chmod(filename, stat.S_IWUSR)
             os.remove(filename)
         for name in dirs:
-            rmtree(os.path.join(root, name))
+            os.rmdir(os.path.join(root, name))
     os.rmdir(dir)
