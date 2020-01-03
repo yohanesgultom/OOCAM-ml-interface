@@ -1,0 +1,39 @@
+<html>
+	<head>
+		<title>Training Results</title>
+		<style>
+			table {
+				border-collapse:collapse;
+			}
+			table, th, td {
+				border: 1px solid black;
+			}
+			th, td {
+				padding: 5px;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<p>Your models and labels were saved in the output folder.</p> 
+		<p>Here is a summary of the models that have been saved: </p> 
+		<table>
+			<tr>
+				<th>Specialization</th>
+				<th>Validation Loss</th>
+				<th>Validation Accuracy</th>
+				<th>Filename</th>
+			</tr>
+			{% for model in models %}
+			<tr>
+				<td>{{model.specialization}}</td>
+				<td>{{model.val_loss}}</td>
+				<td>{{model.val_acc}}</td>
+				<td>{{model.filename}}</td>
+			</tr>
+			{% endfor %}
+		</table>
+
+		<p>Lower validation loss and higher validation accuracy is better.</p>
+	</body>
+</html>
