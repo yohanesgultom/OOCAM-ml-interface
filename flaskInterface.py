@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-import os, modelTrain, modelPredict, directoryUtils
+import os, modelTrain, modelPredict, directoryUtils, re
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -21,14 +21,27 @@ def train():
         epochs = int(request.form['epoch'])
 
         print("Beginning handover to training script.")
-        history = modelTrain.trainModel(split, epochs)
-
-        val_accs = list(map(float, history['val_accuracy']))
-        max_val_acc = max(val_accs)
+        modelTrain.trainModel(split, epochs)
         
+        modelList = []
+        query = re.compile(r'^(\w+)_(\d.\d{3})_(\d.\d{3}).h5$')
+
+        for file in os.listdir("output"):
+            matches = query.findall(file)
+
+            model = {}
+
+            if len(matches) > 0:
+                model['specialization'] = "Maximum Accuracy" if matches[0][0] == "max_acc" else "Minimum Loss"
+                model['val_loss'] = '{:.3f}'.format(float(matches[0][1]))
+                model['val_acc'] = '{:.1f}%'.format(float(matches[0][2]) * 100)
+                model['filename'] = file
+
+                modelList.append(model)
+
         directoryUtils.rmtree("temp")
 
-        return f"Maximum validation accuracy: {max_val_acc * 100:.3f}%. Your model and labels were saved in the 'output' folder."
+        return render_template("trainResults.html", models = modelList)
         
 @app.route("/predict", methods = ["POST", "GET"])
 def predict():
