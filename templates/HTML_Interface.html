@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
 <title> OOCAM ML Interface </title>
 <style>
-.column {
+.flex-container > div {
   width: 47.5%;
   padding: 10px;
-  height: 500px;
   border-color:white;
   border-style:solid;
   border-radius: 15px;
@@ -15,10 +15,9 @@
 }
 
 /* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
+.flex-container {
+  display: flex;
+  justify-content: space-between;
 }
 </style>
 </head>
@@ -28,57 +27,49 @@
 <h4 style="text-align:center;color:#4EB1BA; font-family:verdana "> Powered by Open Ocean Engineering Ltd. </h4>
 </section>
 <br>
-<div class="row">
-  <div class="column" style="background-color:#222930; float:left";>
+<div class="flex-container">
+  <div style="background-color:#222930; font-family:monospace; font-size:14px">
     <h2 style="text-align:center; color:#4EB1BA"> Train </h2>
-        <pre>
-  Instructions:
+    <p>
+  Instructions: <br> <br>
 
-  (i)   In the first text field (File:), select the folder where all the
-        images for training are located with the file selector.
-       <xmp> File name format: <class_name><image_number>.<jpg|png|jpeg>, </xmp>
-        eg: DotManta34.jpg
-  (ii)  In the second text field (Split:), enter the split value : a float
-        value between 0 and 1
-        0.8 would mean 80% of the images are for train, 20% for test
-  (iii) In the third text field (Epoch:), enter number of epochs: no. of
-        complete presentations of dataset to be learned by machine
-  (iv)  Click Train and give it a little time to process
-        The model (model.h5) and the labels file (labels.dat) will be
-        generated and placed into the 'output' folder. The maximum validation
-        accuracy achieved shall be shown on a new webpage
+  (i)   In the first text field (File:), select the folder where all the images for training are located with the file selector.<br>
+        File name format: &ltclass_name&gt&ltimage_number&gt.&ltjpg|png|jpeg&gt<br>
+        eg: DotManta34.jpg<br>
+  (ii)  In the second text field (Split:), enter the split value : a float value between 0 and 1 <br>
+        0.8 would mean 80% of the images are for train, 20% for test <br>
+  (iii) In the third text field (Epoch:), enter number of epochs: no. of complete presentations of dataset to be learned by machine <br>
+  (iv)  Click Train and give it a little time to process <br>
+        The model (model.h5) and the labels file (labels.dat) will be generated and placed into the 'output' folder. The maximum validation accuracy achieved shall be shown on a new webpage <br>
 <form id="demo" action="http://127.0.0.1:5000/train" enctype = "multipart/form-data" method="POST">
   <br>
-  File:  <input type= "file" size ="60" name ="foldername" webkitdirectory multiple/> <br>
-  Split: <input type= "text" name ="split" size="5"> <br>
-  Epoch: <input type= "text" name ="epoch" size="5">
+  File:  <input type= "file" name ="foldername" style="width:60%" webkitdirectory multiple/> <br><br>
+  Split: <input type= "text" name ="split" style="width:10%"> <br> <br>
+  Epoch: <input type= "text" name ="epoch" style="width:10%"> <br> <br>
+</p>
 <p style="text-align:center">
 <input type = "submit" value ="Train"> </p>
 </form>
-</pre>
+</p>
   </div>
-  <div class="column" style="background-color:#222930; float:right";>
+  <div style="background-color:#222930;font-family:monospace; font-size:14px">
     <h2 style="text-align:center; color:#4EB1BA"> Predict </h2>
-    <pre>
-  Instructions:
+    <p>
+  Instructions: <br> <br>
 
-  (i)   In the first text field (Model:), enter the location of the model.h5
-        file
-  (ii)  In the second text field (Image:), enter the location of the folder
-        containing the image files that needs to be predicted
-  (iii) In the third text field (Labels:), enter the location of the
-        labels.dat file
-  (iv)  The images would be sorted and stored in the 'predictions' folder in
-        the main directory of the repo
+  (i)   In the first text field (Model:), enter the location of the model.h5 file <br>
+  (ii)  In the second text field (Image:), enter the location of the folder containing the image files that needs to be predicted <br>
+  (iii) In the third text field (Labels:), enter the location of the labels.dat file <br>
+  (iv)  The images would be sorted and stored in the 'predictions' folder in the main directory of the repo <br>
 <form id = "demo2" action = "http://127.0.0.1:5000/predict" enctype = "multipart/form-data" method = "POST">
 <br>
-  Model:  <input type= "file"  size="60" name ="modeldir"> <br>
-  Image:  <input type= "file" size="60" name ="imagedir" webkitdirectory multiple/> <br>
-  Labels: <input type= "file" size="60" name ="labeldir"> <br>
+  Model:  <input type= "file"  name ="modeldir" style="width:60%"> <br> <br>
+  Image:  <input type= "file"  name ="imagedir" style="width:60%" webkitdirectory multiple/> <br> <br>
+  Labels: <input type= "file" name ="labeldir" style="width:60%"> <br> <br>
+</p>
 <p style="text-align:center">
 <input type = "submit" value ="Predict"> </p>
 </form>
-</pre>
   </div>
 </div>
     </body>
