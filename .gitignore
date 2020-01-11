@@ -1,6 +1,7 @@
 *~
 temp
 *.swp
+secret_key.dat
 predictions
 env
 

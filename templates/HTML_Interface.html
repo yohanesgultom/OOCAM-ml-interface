@@ -41,14 +41,40 @@
   (iii) In the third text field (Epoch:), enter number of epochs: no. of complete presentations of dataset to be learned by machine <br>
   (iv)  Click Train and give it a little time to process <br>
         The model (model.h5) and the labels file (labels.dat) will be generated and placed into the 'output' folder. The maximum validation accuracy achieved shall be shown on a new webpage <br>
-<form id="demo" action="http://127.0.0.1:5000/train" enctype = "multipart/form-data" method="POST">
+<form id="demo" action="/" enctype = "multipart/form-data" method="POST">
   <br>
-  File:  <input type= "file" name ="foldername" style="width:60%" webkitdirectory multiple/> <br><br>
-  Split: <input type= "text" name ="split" style="width:10%"> <br> <br>
-  Epoch: <input type= "text" name ="epoch" style="width:10%"> <br> <br>
+
+  {{ trainForm.hidden_tag() }}
+  {{ trainForm.images.label }} {{ trainForm.images(webkitdirectory='true') }} <br><br>
+  {{ trainForm.split.label }} {{ trainForm.split }}<br><br>
+  {{ trainForm.epochs.label }} {{ trainForm.epochs }}<br><br>
+
+  {% if trainForm.images.errors %}
+  <ul>
+	  {% for error in trainForm.images.errors %}
+		  <li> {{ error }} </li>
+	  {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if trainForm.split.errors %}
+  <ul>
+	  {% for error in trainForm.split.errors %}
+		  <li> {{ error }} </li>
+	  {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if trainForm.epochs.errors %}
+  <ul>
+	  {% for error in trainForm.epochs.errors %}
+		  <li> {{ error }} </li>
+	  {% endfor %}
+  </ul>
+  {% endif %}
+  {{ trainForm.submit }}
+
 </p>
-<p style="text-align:center">
-<input type = "submit" value ="Train"> </p>
 </form>
 </p>
   </div>
@@ -61,14 +87,39 @@
   (ii)  In the second text field (Image:), enter the location of the folder containing the image files that needs to be predicted <br>
   (iii) In the third text field (Labels:), enter the location of the labels.dat file <br>
   (iv)  The images would be sorted and stored in the 'predictions' folder in the main directory of the repo <br>
-<form id = "demo2" action = "http://127.0.0.1:5000/predict" enctype = "multipart/form-data" method = "POST">
+<form id = "demo2" action = "/" enctype = "multipart/form-data" method = "POST">
 <br>
-  Model:  <input type= "file"  name ="modeldir" style="width:60%"> <br> <br>
-  Image:  <input type= "file"  name ="imagedir" style="width:60%" webkitdirectory multiple/> <br> <br>
-  Labels: <input type= "file" name ="labeldir" style="width:60%"> <br> <br>
+{{ testForm.hidden_tag() }}
+{{ testForm.images.label }} {{ testForm.images(webkitdirectory='true') }} <br><br>
+{{ testForm.model.label }} {{ testForm.model }}<br><br>
+{{ testForm.labels.label }} {{ testForm.labels }}<br><br>
+
+  {% if testForm.images.errors %}
+  <ul>
+	  {% for error in testForm.images.errors %}
+		  <li> {{ error }} </li>
+	  {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if testForm.model.errors %}
+  <ul>
+	  {% for error in testForm.model.errors %}
+		  <li> {{ error }} </li>
+	  {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if testForm.labels.errors %}
+  <ul>
+	  {% for error in testForm.labels.errors %}
+		  <li> {{ error }} </li>
+	  {% endfor %}
+  </ul>
+  {% endif %}
+
+  {{ testForm.submit }}
 </p>
-<p style="text-align:center">
-<input type = "submit" value ="Predict"> </p>
 </form>
   </div>
 </div>
