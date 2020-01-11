@@ -15,7 +15,7 @@
 	</head>
 	
 	<body>
-		<p>Your models and labels were saved in the output folder.</p> 
+		<p>Your models and labels were saved in the "output" folder in the ZIP file (see below).</p> 
 		<p>Here is a summary of the models that have been saved: </p> 
 		<table>
 			<tr>
@@ -35,5 +35,10 @@
 		</table>
 
 		<p>Lower validation loss and higher validation accuracy is better.</p>
+
+		<p>Click the button below to start a download of the ZIP file containing your models and labels: </p>
+		<form action = "{{ url_for('download', folder = 'output') }}">
+			<input type = "submit" value = "Download" />
+		</form>
 	</body>
 </html>

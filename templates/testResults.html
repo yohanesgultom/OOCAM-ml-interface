@@ -1,0 +1,14 @@
+<html>
+	<head>
+		<title>Prediction Results</title>
+	</head>
+	
+	<body>
+		<p>Predictions were made and saved in the "predictions" folder in the ZIP file (see below).</p> 
+
+		<p>Click the button below to start a download of the ZIP file containing your predictions.</p>
+		<form action = "{{ url_for('download', folder = 'predictions') }}">
+			<input type = "submit" value = "Download" />
+		</form>
+	</body>
+</html>
