@@ -12,6 +12,9 @@ with open('secret_key.dat', 'r') as f:
     k = json.load(f)
     app.secret_key = k['SECRET_KEY']
 
+def allowed_file(filename, exts):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in exts
+
 @app.route("/", methods = ['GET', 'POST'])
 def index():
     trainForm = TrainForm()
@@ -23,8 +26,9 @@ def index():
                 directoryUtils.rmtree("temp")
             os.mkdir('temp')
             for f in trainForm.images.data:
-                fil = secure_filename(f.filename)
-                f.save(os.path.join('temp', fil))
+                if allowed_file(secure_filename(f.filename), ['jpg', 'jpeg', 'png']):
+                    fil = secure_filename(f.filename)
+                    f.save(os.path.join('temp', fil))
             split = float(trainForm.split.data)
             epochs = int(trainForm.epochs.data)
 
@@ -63,11 +67,18 @@ def index():
             model = testForm.model.data
             label = testForm.labels.data
 
-            model.save(os.path.join("temp", "model", secure_filename(model.filename)))
-            label.save(os.path.join("temp", "label", secure_filename(label.filename)))
+            if allowed_file(secure_filename(model.filename), ['h5']):
+                model.save(os.path.join("temp", "model", secure_filename(model.filename)))
+            else:
+                return 'Invalid model.'
+            if allowed_file(secure_filename(label.filename), ['dat']):
+                label.save(os.path.join("temp", "label", secure_filename(label.filename)))
+            else:
+                return 'Invalid labels.'
 
             for f in testForm.images.data:
-                f.save(os.path.join('temp', 'images', secure_filename(f.filename)))
+                if allowed_file(secure_filename(f.filename), ['jpeg', 'jpg', 'png']):
+                    f.save(os.path.join('temp', 'images', secure_filename(f.filename)))
 
             print("Beginning handover to prediction script.")
             modelPredict.predict()
