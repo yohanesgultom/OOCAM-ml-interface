@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from flask_wtf import CSRFProtect
-import os, modelTrain, modelPredict, directoryUtils, re, json
+import os, modelTrain, modelPredict, directoryUtils, downloadUtils, re, json
 from werkzeug.utils import secure_filename
 
 from forms import TrainForm, TestForm
@@ -33,7 +33,7 @@ def index():
             epochs = int(trainForm.epochs.data)
 
             print("Beginning handover to training script.")
-            modelTrain.trainModel(split, epochs)
+            #modelTrain.trainModel(split, epochs)
             
             modelList = []
             query = re.compile(r'^(\w+)_(\d.\d{3})_(\d.\d{3}).h5$')
@@ -81,13 +81,17 @@ def index():
                     f.save(os.path.join('temp', 'images', secure_filename(f.filename)))
 
             print("Beginning handover to prediction script.")
-            modelPredict.predict()
+            #modelPredict.predict()
 
             directoryUtils.rmtree("temp")
 
-            return f"Predictions were made and stored in the 'predictions' folder."
+            return render_template("testResults.html")
 
     return render_template("HTML_Interface.html", trainForm = trainForm, testForm = testForm)
+
+@app.route('/download/<folder>')
+def download(folder):
+    return downloadUtils.zipAndDownload(folder)
 
 if __name__ == '__main__':
     app.run(debug = True)

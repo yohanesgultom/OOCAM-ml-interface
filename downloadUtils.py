@@ -8,4 +8,4 @@ def zipAndDownload(folder):
             for filename in filenames:
                 zipObj.write(os.path.join(folderName, filename))
 
-    send_file(f'{folder}.zip', as_attachment = True)
+    return send_file(f'{folder}.zip', as_attachment = True)
