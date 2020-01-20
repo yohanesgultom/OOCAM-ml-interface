@@ -33,7 +33,7 @@ def index():
             epochs = int(trainForm.epochs.data)
 
             print("Beginning handover to training script.")
-            #modelTrain.trainModel(split, epochs)
+            modelTrain.trainModel(split, epochs)
             
             modelList = []
             query = re.compile(r'^(\w+)_(\d.\d{3})_(\d.\d{3}).h5$')
@@ -81,7 +81,7 @@ def index():
                     f.save(os.path.join('temp', 'images', secure_filename(f.filename)))
 
             print("Beginning handover to prediction script.")
-            #modelPredict.predict()
+            modelPredict.predict()
 
             directoryUtils.rmtree("temp")
 
