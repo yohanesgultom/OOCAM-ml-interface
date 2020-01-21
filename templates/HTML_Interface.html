@@ -72,10 +72,14 @@
 	  {% endfor %}
   </ul>
   {% endif %}
+  
   {{ trainForm.submit }}
 
 </p>
 </form>
+	<form action = "{{ url_for('download', folder = 'train') }}">
+		<input type = "submit" value = "Download sample train folder" />
+	</form>
 </p>
   </div>
   <div style="background-color:#222930;font-family:monospace; font-size:14px">
@@ -121,6 +125,9 @@
   {{ testForm.submit }}
 </p>
 </form>
+	<form action = "{{ url_for('download', folder = 'test') }}">
+		<input type = "submit" value = "Download sample test folder" />
+	</form>
   </div>
 </div>
     </body>
