@@ -33,14 +33,14 @@
     <p>
   Instructions: <br> <br>
 
-  (i)   In the first text field (File:), select the folder where all the images for training are located with the file selector.<br>
+  (i)   In the first field (Images), select the folder where all the images for training are located with the file selector.<br>
         File name format: &ltclass_name&gt&ltimage_number&gt.&ltjpg|png|jpeg&gt<br>
         eg: DotManta34.jpg<br>
-  (ii)  In the second text field (Split:), enter the split value : a float value between 0 and 1 <br>
+  (ii)  In the second text field (Split), enter the split value : a float value between 0 and 1 <br>
         0.8 would mean 80% of the images are for train, 20% for test <br>
-  (iii) In the third text field (Epoch:), enter number of epochs: no. of complete presentations of dataset to be learned by machine <br>
-  (iv)  Click Train and give it a little time to process <br>
-        The model (model.h5) and the labels file (labels.dat) will be generated and placed into the 'output' folder. The maximum validation accuracy achieved shall be shown on a new webpage <br>
+  (iii) In the third text field (Number of epochs), enter number of epochs: no. of complete presentations of dataset to be learned by machine <br>
+  (iv)  Click Train and give it a little time to process. <br>
+        The models and labels will be saved, and you can download them in a zip file.<br>
 <form id="demo" action="/" enctype = "multipart/form-data" method="POST">
   <br>
 
@@ -87,10 +87,10 @@
     <p>
   Instructions: <br> <br>
 
-  (i)   In the first text field (Model:), enter the location of the model.h5 file <br>
-  (ii)  In the second text field (Image:), enter the location of the folder containing the image files that needs to be predicted <br>
-  (iii) In the third text field (Labels:), enter the location of the labels.dat file <br>
-  (iv)  The images would be sorted and stored in the 'predictions' folder in the main directory of the repo <br>
+  (i)   In the first field (Images), select the images you would like to predict.<br>
+  (ii)  In the second field (Model), select the model (.h5 file) you would like to use to predict.<br>
+  (iii) In the third field (Labels), enter the location of the labels (.dat file). <br>
+  The predicted images will be stored according to the labels, which can then be downloaded as a zip file.<br>
 <form id = "demo2" action = "/" enctype = "multipart/form-data" method = "POST">
 <br>
 {{ testForm.hidden_tag() }}
