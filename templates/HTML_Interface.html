@@ -32,60 +32,65 @@
     <h2 style="text-align:center; color:#4EB1BA"> Train </h2>
     <p>
   Instructions: <br> <br>
+   
+<iframe width = "640" height = "320" source = "train_video.mp4" frameborder = "0" allowfullscreen></iframe> <br><br>
 
-  (i)   In the first field (Images), select the folder where all the images for training are located with the file selector.<br>
-        File name format: &ltclass_name&gt&ltimage_number&gt.&ltjpg|png|jpeg&gt<br>
-        eg: DotManta34.jpg<br>
-  (ii)  In the second text field (Split), enter the split value : a float value between 0 and 1 <br>
-        0.8 would mean 80% of the images are for train, 20% for test <br>
-  (iii) In the third text field (Number of epochs), enter number of epochs: no. of complete repetitions of dataset to be learned by machine <br>
-  (iv)  Click Train and give it a little time to process. <br>
-        The models and labels will be saved, and you can download them in a zip file.<br>
+
+(i)   In the first field (Images), select the folder where all the images for training are located with the file selector.<br>
+	File name format: &ltclass_name&gt&ltimage_number&gt.&ltjpg|png|jpeg&gt<br>
+	eg: DotManta34.jpg<br>
+(ii)  In the second text field (Split), enter the split value : a float value between 0 and 1 <br>
+	0.8 would mean 80% of the images are for train, 20% for test <br>
+(iii) In the third text field (Number of epochs), enter number of epochs: no. of complete repetitions of dataset to be learned by machine <br>
+(iv)  Click Train and give it a little time to process. <br>
+	The models and labels will be saved, and you can download them in a zip file.<br>
 <form id="demo" action="/" enctype = "multipart/form-data" method="POST">
-  <br>
+<br>
 
-  {{ trainForm.hidden_tag() }}
-  {{ trainForm.images.label }} {{ trainForm.images(webkitdirectory='true') }} <br><br>
-  {{ trainForm.split.label }} {{ trainForm.split }}<br><br>
-  {{ trainForm.epochs.label }} {{ trainForm.epochs }}<br><br>
+{{ trainForm.hidden_tag() }}
+{{ trainForm.images.label }} {{ trainForm.images(webkitdirectory='true') }} <br><br>
+{{ trainForm.split.label }} {{ trainForm.split }}<br><br>
+{{ trainForm.epochs.label }} {{ trainForm.epochs }}<br><br>
 
-  {% if trainForm.images.errors %}
-  <ul>
-	  {% for error in trainForm.images.errors %}
-		  <li> {{ error }} </li>
-	  {% endfor %}
-  </ul>
-  {% endif %}
+{% if trainForm.images.errors %}
+<ul>
+  {% for error in trainForm.images.errors %}
+	  <li> {{ error }} </li>
+  {% endfor %}
+</ul>
+{% endif %}
 
-  {% if trainForm.split.errors %}
-  <ul>
-	  {% for error in trainForm.split.errors %}
-		  <li> {{ error }} </li>
-	  {% endfor %}
-  </ul>
-  {% endif %}
+{% if trainForm.split.errors %}
+<ul>
+  {% for error in trainForm.split.errors %}
+	  <li> {{ error }} </li>
+  {% endfor %}
+</ul>
+{% endif %}
 
-  {% if trainForm.epochs.errors %}
-  <ul>
-	  {% for error in trainForm.epochs.errors %}
-		  <li> {{ error }} </li>
-	  {% endfor %}
-  </ul>
-  {% endif %}
-  
-  {{ trainForm.submit }}
+{% if trainForm.epochs.errors %}
+<ul>
+  {% for error in trainForm.epochs.errors %}
+	  <li> {{ error }} </li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{{ trainForm.submit }}
 
 </p>
 </form>
-	<form action = "{{ url_for('download', folder = 'train') }}">
-		<input type = "submit" value = "Download sample train folder" />
-	</form>
+<form action = "{{ url_for('download', folder = 'train') }}">
+	<input type = "submit" value = "Download sample train folder" />
+</form>
 </p>
-  </div>
-  <div style="background-color:#222930;font-family:monospace; font-size:14px">
-    <h2 style="text-align:center; color:#4EB1BA"> Predict </h2>
-    <p>
-  Instructions: <br> <br>
+</div>
+<div style="background-color:#222930;font-family:monospace; font-size:14px">
+<h2 style="text-align:center; color:#4EB1BA"> Predict </h2>
+<p>
+Instructions: <br> <br>
+
+<iframe width = "640" height = "320" source = "test_video.mp4" frameborder = "0" allowfullscreen></iframe> <br><br>
 
   (i)   In the first field (Images), select the images you would like to predict.<br>
   (ii)  In the second field (Model), select the model (.h5 file) you would like to use to predict.<br>
