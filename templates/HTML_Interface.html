@@ -1,139 +1,173 @@
 <!DOCTYPE html>
 <html>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width">
+<link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+
 <head>
-<title> OOCAM ML Interface </title>
-<style>
-.flex-container > div {
-  width: 47.5%;
-  padding: 10px;
-  border-color:white;
-  border-style:solid;
-  border-radius: 15px;
-  border-width: 3px;
-  color:whitesmoke;
-}
+  <title> OOCAM ML Interface </title>
+  <style>
+    html{
+      width: 100%;
+      min-width: 640px;
+    }
+    .flex-container>div {
+      border-color: white;
+      border-style: solid;
+      border-radius: 15px;
+      border-width: 3px;
+      color: whitesmoke;
+    }
 
-/* Clear floats after the columns */
-.flex-container {
-  display: flex;
-  justify-content: space-between;
-}
-</style>
+    /* Clear floats after the columns */
+    .flex-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 40px;
+      justify-items: center;
+    }
+    .element {
+      width: 80%;
+      padding: 20px;
+    }
+    .heading-section{
+      font-family: 'PT Sans', sans-serif;
+      text-align:center;
+      color:#4EB1BA
+    }
+    .instructions {
+      font-family: 'Roboto Mono', monospace;
+    }
+    @media screen and (max-width: 1200px) {
+      .flex-container{
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body style="background-color:#222329">
-<section style="background-color:#222930 ;border-width:3px ;border-style:solid ;border-color:white;border-radius:15px" >
-<h1 style="text-align:center;color:#4EB1BA;font-size:40px; font-weight:bold"> Open Ocean Camera Interface </h1>
-<h4 style="text-align:center;color:#4EB1BA; font-family:verdana "> Powered by Open Ocean Engineering Ltd. </h4>
-</section>
-<br>
-<div class="flex-container">
-  <div style="background-color:#222930; font-family:monospace; font-size:14px">
-    <h2 style="text-align:center; color:#4EB1BA"> Train </h2>
-    <p>
-  Instructions: <br> <br>
-   
-<iframe width="560" height="315" src="https://www.youtube.com/embed/V8IUQu-_G0U" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> <br><br>
+  <section
+    style="font-family: 'Didact Gothic', sans-serif; display: grid; justify-content: center;">
+    <h1 style="text-align:center;color:#4EB1BA;font-size:40px; font-weight:bold"> Open Ocean Camera Interface </h1>
+    <h4 style="text-align:center;color:#4EB1BA;"> Powered by Open Ocean Engineering Ltd. </h4>
+  </section>
+  <br>
+  <div class="flex-container" >
+    <div style="background-color:#222930; font-family: 'Didact Gothic', sans-serif; font-size:14px; width: 100%; display: grid; grid-template-columns: auto; justify-items: center;">
+      <h2 class="heading-section"> Train </h2>
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/V8IUQu-_G0U" frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+      </iframe>
+      <br><br>
+      <div class="element">
+        <p class="instructions">
+          Instructions: <br> <br>
+          (i) In the first field (Images), select the folder where all the images for training are located with the file
+          selector.<br>
+          File name format: &ltclass_name&gt&ltimage_number&gt.&ltjpg|png|jpeg&gt<br>
+          eg: DotManta34.jpg<br><br>
+          (ii) In the second text field (Split), enter the split value : a float value between 0 and 1 <br>
+          0.8 would mean 80% of the images are for train, 20% for test <br><br>
+          (iii) In the third text field (Number of epochs), enter number of epochs: no. of complete repetitions of dataset
+          to be learned by machine <br><br>
+          (iv) Click Train and give it a little time to process. <br>
+          The models and labels will be saved, and you can download them in a zip file.<br>
+          <form id="demo" action="/" enctype="multipart/form-data" method="POST">
+            <br>
+  
+            {{ trainForm.hidden_tag() }}
+            {{ trainForm.images.label }} {{ trainForm.images(webkitdirectory='true') }} <br><br>
+            {{ trainForm.split.label }} {{ trainForm.split }}<br><br>
+            {{ trainForm.epochs.label }} {{ trainForm.epochs }}<br><br>
+  
+            {% if trainForm.images.errors %}
+            <ul>
+              {% for error in trainForm.images.errors %}
+              <li> {{ error }} </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+  
+            {% if trainForm.split.errors %}
+            <ul>
+              {% for error in trainForm.split.errors %}
+              <li> {{ error }} </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+  
+            {% if trainForm.epochs.errors %}
+            <ul>
+              {% for error in trainForm.epochs.errors %}
+              <li> {{ error }} </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+  
+            {{ trainForm.submit }}
+  
+        </p>
+        </form>
+        <form action="{{ url_for('download', folder = 'train') }}">
+          <input type="submit" value="Download sample train folder" />
+        </form>
+      </div>
+    </div>
 
-
-(i)   In the first field (Images), select the folder where all the images for training are located with the file selector.<br>
-	File name format: &ltclass_name&gt&ltimage_number&gt.&ltjpg|png|jpeg&gt<br>
-	eg: DotManta34.jpg<br>
-(ii)  In the second text field (Split), enter the split value : a float value between 0 and 1 <br>
-	0.8 would mean 80% of the images are for train, 20% for test <br>
-(iii) In the third text field (Number of epochs), enter number of epochs: no. of complete repetitions of dataset to be learned by machine <br>
-(iv)  Click Train and give it a little time to process. <br>
-	The models and labels will be saved, and you can download them in a zip file.<br>
-<form id="demo" action="/" enctype = "multipart/form-data" method="POST">
-<br>
-
-{{ trainForm.hidden_tag() }}
-{{ trainForm.images.label }} {{ trainForm.images(webkitdirectory='true') }} <br><br>
-{{ trainForm.split.label }} {{ trainForm.split }}<br><br>
-{{ trainForm.epochs.label }} {{ trainForm.epochs }}<br><br>
-
-{% if trainForm.images.errors %}
-<ul>
-  {% for error in trainForm.images.errors %}
-	  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-{% endif %}
-
-{% if trainForm.split.errors %}
-<ul>
-  {% for error in trainForm.split.errors %}
-	  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-{% endif %}
-
-{% if trainForm.epochs.errors %}
-<ul>
-  {% for error in trainForm.epochs.errors %}
-	  <li> {{ error }} </li>
-  {% endfor %}
-</ul>
-{% endif %}
-
-{{ trainForm.submit }}
-
-</p>
-</form>
-<form action = "{{ url_for('download', folder = 'train') }}">
-	<input type = "submit" value = "Download sample train folder" />
-</form>
-</p>
-</div>
-<div style="background-color:#222930;font-family:monospace; font-size:14px">
-<h2 style="text-align:center; color:#4EB1BA"> Predict </h2>
-<p>
-Instructions: <br> <br>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/QMZcQujm0-4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> <br><br>
-
-  (i)   In the first field (Images), select the images you would like to predict.<br>
-  (ii)  In the second field (Model), select the model (.h5 file) you would like to use to predict.<br>
-  (iii) In the third field (Labels), enter the location of the labels (.dat file). <br>
-  The predicted images will be stored according to the labels, which can then be downloaded as a zip file.<br>
-<form id = "demo2" action = "/" enctype = "multipart/form-data" method = "POST">
-<br>
-{{ testForm.hidden_tag() }}
-{{ testForm.images.label }} {{ testForm.images(webkitdirectory='true') }} <br><br>
-{{ testForm.model.label }} {{ testForm.model }}<br><br>
-{{ testForm.labels.label }} {{ testForm.labels }}<br><br>
-
-  {% if testForm.images.errors %}
-  <ul>
-	  {% for error in testForm.images.errors %}
-		  <li> {{ error }} </li>
-	  {% endfor %}
-  </ul>
-  {% endif %}
-
-  {% if testForm.model.errors %}
-  <ul>
-	  {% for error in testForm.model.errors %}
-		  <li> {{ error }} </li>
-	  {% endfor %}
-  </ul>
-  {% endif %}
-
-  {% if testForm.labels.errors %}
-  <ul>
-	  {% for error in testForm.labels.errors %}
-		  <li> {{ error }} </li>
-	  {% endfor %}
-  </ul>
-  {% endif %}
-
-  {{ testForm.submit }}
-</p>
-</form>
-	<form action = "{{ url_for('download', folder = 'test') }}">
-		<input type = "submit" value = "Download sample test folder" />
-	</form>
+    <div style="background-color:#222930; font-family: 'Didact Gothic', sans-serif; font-size:14px; width: 100%; display: grid; grid-template-columns: auto; justify-items: center;">
+      <h2 class="heading-section">Predict</h2>
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/QMZcQujm0-4" frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <br><br>
+        <div class="element">
+          <p class="instructions">
+            Instructions: <br> <br>
+            (i) In the first field (Images), select the images you would like to predict.<br><br>
+            (ii) In the second field (Model), select the model (.h5 file) you would like to use to predict.<br><br>
+            (iii) In the third field (Labels), enter the location of the labels (.dat file). <br><br>
+            The predicted images will be stored according to the labels, which can then be downloaded as a zip file.<br>
+            <form id="demo2" action="/" enctype="multipart/form-data" method="POST">
+              <br>
+              {{ testForm.hidden_tag() }}
+              {{ testForm.images.label }} {{ testForm.images(webkitdirectory='true') }} <br><br>
+              {{ testForm.model.label }} {{ testForm.model }}<br><br>
+              {{ testForm.labels.label }} {{ testForm.labels }}<br><br>
+    
+              {% if testForm.images.errors %}
+              <ul>
+                {% for error in testForm.images.errors %}
+                <li> {{ error }} </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+    
+              {% if testForm.model.errors %}
+              <ul>
+                {% for error in testForm.model.errors %}
+                <li> {{ error }} </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+    
+              {% if testForm.labels.errors %}
+              <ul>
+                {% for error in testForm.labels.errors %}
+                <li> {{ error }} </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+    
+              {{ testForm.submit }}
+            </p>
+          </form>
+          <form action="{{ url_for('download', folder = 'test') }}">
+            <input type="submit" value="Download sample test folder" />
+          </form>
+        </div>
+    </div>
   </div>
-</div>
-    </body>
-    </html>
+</body>
+
+</html>
