@@ -26,8 +26,11 @@ def index():
                 directoryUtils.rmtree("temp")
             os.mkdir('temp')
             for f in trainForm.images.data:
-                if allowed_file(secure_filename(f.filename), ['jpg', 'jpeg', 'png']):
-                    fil = secure_filename(f.filename)
+                # remove underscores to avoid ambiguity 
+                # as secure_filename() replaces os.path.sep with underscore
+                safe_name = f.filename.replace('_', '')
+                fil = secure_filename(safe_name)
+                if allowed_file(fil, ['jpg', 'jpeg', 'png']):                                            
                     f.save(os.path.join('temp', fil))
             split = float(trainForm.split.data)
             epochs = int(trainForm.epochs.data)
@@ -94,4 +97,7 @@ def download(folder):
     return downloadUtils.zipAndDownload(folder)
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    import webbrowser, threading
+    port = 5000
+    threading.Timer(1, lambda: webbrowser.open_new_tab(f'http://localhost:{port}')).start()
+    app.run(port = port, debug = True)

@@ -7,8 +7,7 @@ For using the current interface, please follow these steps -
     (i) Navigate to the directory where the repo has been cloned  
     (ii) Double click the installer.bat file  
 3. Open Web Interface:  
-    (i) Open the 'flaskInterface.py' file  
-    (ii) Open the 'run.html' file    
+    (i) Open the 'run.bat' file  
 4. To train model:  
     (i) In the first text field (File:), select the folder where all the images for training are located with the file selector.    
         File name format: <class_name><image_number>.<jpg|png|jpeg>, eg: DotManta34.jpg  
