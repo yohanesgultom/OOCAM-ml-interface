@@ -99,5 +99,5 @@ def download(folder):
 if __name__ == '__main__':
     import webbrowser, threading
     port = 5000
-    threading.Timer(1, lambda: webbrowser.open_new_tab(f'http://localhost:{port}')).start()
-    app.run(port = port, debug = True)
+    threading.Timer(2, lambda: webbrowser.open(f'http://localhost:{port}')).start()
+    app.run(port = port, debug = False)
