@@ -34,9 +34,10 @@ def index():
                     f.save(os.path.join('temp', fil))
             split = float(trainForm.split.data)
             epochs = int(trainForm.epochs.data)
+            dim = (trainForm.width.data,trainForm.height.data)
 
             print("Beginning handover to training script.")
-            modelTrain.trainModel(split, epochs)
+            modelTrain.trainModel(split, epochs, dim=dim)
             
             modelList = []
             query = re.compile(r'^(\w+)_(\d.\d{3})_(\d.\d{3}).h5$')
