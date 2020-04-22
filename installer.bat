@@ -26,6 +26,8 @@ if not exist %PYTHON_EXE% (
 	echo,
 
 	if exist %PYTHON_MSI% (
+		rem if an exact version is installed, uninstall it quietly
+		%PYTHON_MSI% /uninstall /quiet
         %PYTHON_MSI% /quiet InstallAllUsers=1 TargetDir=%PYTHON_HOME% Include_pip=1
 	) else (
 		echo Python installer package didn't seem to download correctly.
