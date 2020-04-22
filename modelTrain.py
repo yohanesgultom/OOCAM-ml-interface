@@ -3,12 +3,12 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.applications.xception import preprocess_input, Xception
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
-def generateNewTrainingData(splitRatio):
+def generateNewTrainingData(splitRatio, dim=(256, 256)):
     print("Obtaining images.")
-    images, labels, classes = imageUploadUtils.getAllTrainImages('temp')
+    images, labels, classes = imageUploadUtils.getAllTrainImages('temp', dim=dim)
 
     trainx, testx, trainy, testy = train_test_split(images, labels, test_size = 1 - splitRatio, stratify = labels)
-    
+
     print("Beginning Xception download.")
     xc = Xception(include_top = False, weights = 'imagenet', input_shape = trainx[0].shape)
     
@@ -43,9 +43,9 @@ def generateNewTrainingData(splitRatio):
 
     return finaldata
     
-def trainModel(splitRatio, epoch):
+def trainModel(splitRatio, epoch, dim=(256, 256)):
     print("Generating training data.")
-    allData = generateNewTrainingData(splitRatio)
+    allData = generateNewTrainingData(splitRatio, dim=dim)
 
     print("Getting classifier model.")
     model = modelHolder.getModel(allData)

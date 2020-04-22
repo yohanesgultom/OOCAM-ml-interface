@@ -79,31 +79,19 @@
   
             {{ trainForm.hidden_tag() }}
             {{ trainForm.images.label }} {{ trainForm.images(webkitdirectory='true') }} <br><br>
+            {{ trainForm.width.label }} {{ trainForm.width(size=1, maxlength=4) }} {{ trainForm.height.label }} {{ trainForm.height(size=1, maxlength=4) }}<br><br>
             {{ trainForm.split.label }} {{ trainForm.split }}<br><br>
             {{ trainForm.epochs.label }} {{ trainForm.epochs }}<br><br>
   
-            {% if trainForm.images.errors %}
-            <ul>
-              {% for error in trainForm.images.errors %}
-              <li> {{ error }} </li>
-              {% endfor %}
+            {% if trainForm.errors %}
+            <ul class="errors">
+                {% for field_name, field_errors in trainForm.errors|dictsort if field_errors %}
+                    {% for error in field_errors %}
+                        <li>{{ trainForm[field_name].label }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
             </ul>
-            {% endif %}
-  
-            {% if trainForm.split.errors %}
-            <ul>
-              {% for error in trainForm.split.errors %}
-              <li> {{ error }} </li>
-              {% endfor %}
-            </ul>
-            {% endif %}
-  
-            {% if trainForm.epochs.errors %}
-            <ul>
-              {% for error in trainForm.epochs.errors %}
-              <li> {{ error }} </li>
-              {% endfor %}
-            </ul>
+            <br>
             {% endif %}
   
             {{ trainForm.submit }}
