@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_wtf import CSRFProtect
-import os, modelTrain, modelPredict, directoryUtils, downloadUtils, re, json, time, subprocess
+import os, modelTrain, modelPredict, directoryUtils, downloadUtils, re, json, subprocess
 from werkzeug.utils import secure_filename
 
 from forms import TrainForm, TestForm
