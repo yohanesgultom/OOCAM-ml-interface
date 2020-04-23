@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_wtf import CSRFProtect
-import os, modelTrain, modelPredict, directoryUtils, downloadUtils, re, json
+import os, modelTrain, modelPredict, directoryUtils, downloadUtils, re, json, time, subprocess
 from werkzeug.utils import secure_filename
 
 from forms import TrainForm, TestForm
@@ -8,6 +8,7 @@ from forms import TrainForm, TestForm
 app = Flask(__name__)
 csrf = CSRFProtect(app)
 
+LOG_FILE_TRAIN = 'trainModel.out'
 with open('secret_key.dat', 'r') as f:
     k = json.load(f)
     app.secret_key = k['SECRET_KEY']
@@ -33,31 +34,14 @@ def index():
                 if allowed_file(fil, ['jpg', 'jpeg', 'png']):                                            
                     f.save(os.path.join('temp', fil))
             split = float(trainForm.split.data)
-            epochs = int(trainForm.epochs.data)
-            dim = (trainForm.width.data,trainForm.height.data)
-
-            print("Beginning handover to training script.")
-            modelTrain.trainModel(split, epochs, dim=dim)
-            
-            modelList = []
-            query = re.compile(r'^(\w+)_(\d.\d{3})_(\d.\d{3}).h5$')
-
-            for file in os.listdir("output"):
-                matches = query.findall(file)
-
-                model = {}
-
-                if len(matches) > 0:
-                    model['specialization'] = "Maximum Accuracy" if matches[0][0] == "max_acc" else "Minimum Loss"
-                    model['val_loss'] = '{:.3f}'.format(float(matches[0][1]))
-                    model['val_acc'] = '{:.1f}%'.format(float(matches[0][2]) * 100)
-                    model['filename'] = file
-
-                    modelList.append(model)
-
-            directoryUtils.rmtree("temp")
-
-            return render_template("trainResults.html", models = modelList)
+            epochs = int(trainForm.epochs.data)            
+            if os.path.isfile(LOG_FILE_TRAIN):
+                os.remove(LOG_FILE_TRAIN)
+            w = open(LOG_FILE_TRAIN, 'w+')
+            cmd = ['python', '-u', 'modelTrain.py', str(split), str(epochs), str(trainForm.width.data), str(trainForm.height.data)]
+            subprocess.Popen(cmd, stdout=w, stderr=subprocess.STDOUT)
+            w.close()
+            return redirect(url_for('trainResults'))            
 
     if testForm.submit.data and testForm.validate_on_submit():
         if request.method == "POST":
@@ -97,6 +81,42 @@ def index():
 def download(folder):
     return downloadUtils.zipAndDownload(folder)
 
+@app.route('/trainResults')
+def trainResults():
+    return render_template("trainResults.html")
+@app.route('/results/<process>')
+def result_data(process):
+    res = {}
+    if request.method == "GET":
+        outFile = None
+        if process == 'train':
+            outFile = LOG_FILE_TRAIN
+        else:
+            return f'Unknown process type: {process}', status.HTTP_400_BAD_REQUEST        
+        with open(outFile, 'r') as f:
+            res['logs'] = f.readlines()
+    
+        if os.path.isfile(outFile):
+            lastLine = res['logs'][-1] if len(res['logs']) > 0 else None
+            # train results
+            if process == 'train':
+                if lastLine and lastLine.strip().lower().startswith('training complete'):
+                    modelList = []
+                    query = re.compile(r'^(\w+)_(\d.\d{3})_(\d.\d{3}).h5$')
+                    for file in os.listdir("output"):
+                        matches = query.findall(file)
+                        model = {}
+                        if len(matches) > 0:
+                            model['specialization'] = "Maximum Accuracy" if matches[0][0] == "max_acc" else "Minimum Loss"
+                            model['val_loss'] = '{:.3f}'.format(float(matches[0][1]))
+                            model['val_acc'] = '{:.1f}%'.format(float(matches[0][2]) * 100)
+                            model['filename'] = file
+                            modelList.append(model)
+                    res['model_list'] = modelList
+                    if os.path.isdir('temp'):
+                        directoryUtils.rmtree("temp")
+
+    return jsonify(res)
 if __name__ == '__main__':
     import webbrowser, threading
     port = 5000

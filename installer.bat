@@ -90,6 +90,6 @@ echo Installing dependencies...
 echo ------------------------------------------------------------------
 echo,
 
-venv\Scripts\pip install -r requirements.txt
+venv\Scripts\pip install -v -r requirements.txt
 
 echo Installation completed!
