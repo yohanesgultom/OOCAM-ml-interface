@@ -1,0 +1,27 @@
+body {
+    margin: 10px;     
+    color: white;
+    font-family: 'Roboto Mono', monospace;
+    font-size: smaller;
+}
+.logs-container {
+    color: black;
+    padding: 4px; 
+    background-color: rgb(245, 237, 237); 
+    height: 400px; 
+    overflow-x: hidden; 
+    overflow-x: auto; 
+    text-align: justify; 
+}
+.hidden {
+    display: none;
+}
+table {
+	border-collapse:collapse;
+}
+table, th, td {
+    border: 1px solid #ccc;
+}
+th, td {
+    padding: 5px;
+}

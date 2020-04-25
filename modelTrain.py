@@ -84,3 +84,15 @@ def trainModel(splitRatio, epoch, dim=(256, 256)):
 
     print("Training complete.")
     return history.history
+
+if __name__ == '__main__':
+    import sys
+    if len(sys.argv) < 5:
+        print('usage: python modelTrain.py [split_ratio] [epoch] [width] [height]')
+        sys.exit(0)
+    splitRatio = float(sys.argv[1])
+    epoch = int(sys.argv[2])
+    width = int(sys.argv[3])
+    height = int(sys.argv[4])
+    print(f'Training Epoch={epoch}')
+    trainModel(splitRatio, epoch, dim=(width, height))

@@ -1,44 +1,47 @@
-<html>
-	<head>
-		<title>Training Results</title>
-		<style>
-			table {
-				border-collapse:collapse;
-			}
-			table, th, td {
-				border: 1px solid black;
-			}
-			th, td {
-				padding: 5px;
-			}
-		</style>
-	</head>
-	
-	<body>
-		<p>Your models and labels were saved in the "output" folder in the ZIP file (see below).</p> 
-		<p>Here is a summary of the models that have been saved: </p> 
-		<table>
-			<tr>
-				<th>Specialization</th>
-				<th>Validation Loss</th>
-				<th>Validation Accuracy</th>
-				<th>Filename</th>
-			</tr>
-			{% for model in models %}
-			<tr>
-				<td>{{model.specialization}}</td>
-				<td>{{model.val_loss}}</td>
-				<td>{{model.val_acc}}</td>
-				<td>{{model.filename}}</td>
-			</tr>
-			{% endfor %}
-		</table>
+{% extends 'base.html' %}
 
-		<p>Lower validation loss and higher validation accuracy is better.</p>
+{% block title %}Training Results | {% endblock %}
 
-		<p>Click the button below to start a download of the ZIP file containing your models and labels: </p>
-		<form action = "{{ url_for('download', folder = 'output') }}">
-			<input type = "submit" value = "Download" />
-		</form>
-	</body>
-</html>
+{% block header %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/results.css') }}" type="text/css" />
+{% endblock %}
+
+{% block content %}
+    
+<h3>Progress</h3>
+<div style="background-color:#f1f1f1">
+    <div id="progress-bar-1" style="text-align:center;background-color:#2196F3;color:#fff;width:0%">0%</div>
+</div>
+
+<div id="completed-message" class="hidden">
+    <p>Your models and labels were saved in the "output" folder in the ZIP file (see below).</p> 
+    <p>Here is a summary of the models that have been saved: </p> 
+    <table id="model-table">
+        <tr>
+            <th>Specialization</th>
+            <th>Validation Loss</th>
+            <th>Validation Accuracy</th>
+            <th>Filename</th>
+        </tr>
+    </table>
+
+    <p>Lower validation loss and higher validation accuracy is better.</p>
+
+    <p>Click the button below to start a download of the ZIP file containing your models and labels: </p>
+    <form action="{{ url_for('download', folder = 'output') }}">
+        <input type = "submit" value = "Download" />
+    </form>
+
+</div>
+
+<br>
+
+<!-- Logs -->
+<h3>Logs</h3>
+<div class="logs-container"><pre id="logs">Loading logs..</pre></div>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/results.js') }}"></script>
+<script>
+loadTrainResults();
+</script>
+{% endblock %}
