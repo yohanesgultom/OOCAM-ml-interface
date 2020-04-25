@@ -13,11 +13,11 @@
       min-width: 640px;
     }
     .flex-container>div {
-      border-color: white;
+      border-color: #4EB1BA;
       border-style: solid;
       border-radius: 15px;
       border-width: 3px;
-      color: whitesmoke;
+      color: #4EB1BA;
     }
 
     /* Clear floats after the columns */
@@ -44,10 +44,19 @@
         grid-template-columns: 1fr;
       }
     }
+    input{
+      background-color: #f0f0f0;
+      color: #4EB1BA;
+      border: 1px solid #4EB1BA;
+      height: 40px;
+      border-radius: 10px;
+      align-items: center;
+      text-align: center;
+    }
   </style>
 </head>
 
-<body style="background-color:#222329">
+<body>
   <section
     style="font-family: 'Didact Gothic', sans-serif; display: grid; justify-content: center;">
     <h1 style="text-align:center;color:#4EB1BA;font-size:40px; font-weight:bold"> Open Ocean Camera Interface </h1>
@@ -55,15 +64,15 @@
   </section>
   <br>
   <div class="flex-container" >
-    <div style="background-color:#222930; font-family: 'Didact Gothic', sans-serif; font-size:14px; width: 100%; display: grid; grid-template-columns: auto; justify-items: center;">
+    <div style=" font-family: 'Didact Gothic', sans-serif; font-size:14px; width: 100%; display: grid; grid-template-columns: auto; justify-items: center;">
       <h2 class="heading-section"> Train </h2>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/V8IUQu-_G0U" frameborder="0"
+      <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/V8IUQu-_G0U" frameborder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
       </iframe>
-      <br><br>
+      <br><br> -->
       <div class="element">
         <p class="instructions">
-          Instructions: <br> <br>
+          <!-- Instructions: <br> <br>
           (i) In the first field (Images), select the folder where all the images for training are located with the file
           selector.<br>
           File name format: &ltclass_name&gt&ltimage_number&gt.&ltjpg|png|jpeg&gt<br>
@@ -73,10 +82,11 @@
           (iii) In the third text field (Number of epochs), enter number of epochs: no. of complete repetitions of dataset
           to be learned by machine <br><br>
           (iv) Click Train and give it a little time to process. <br>
-          The models and labels will be saved, and you can download them in a zip file.<br>
+          The models and labels will be saved, and you can download them in a zip file.<br> -->
+
+
           <form id="demo" action="/" enctype="multipart/form-data" method="POST">
-            <br>
-  
+           
             {{ trainForm.hidden_tag() }}
             {{ trainForm.images.label }} {{ trainForm.images(webkitdirectory='true') }} <br><br>
             {{ trainForm.width.label }} {{ trainForm.width(size=1, maxlength=4) }} {{ trainForm.height.label }} {{ trainForm.height(size=1, maxlength=4) }}<br><br>
@@ -104,20 +114,20 @@
       </div>
     </div>
 
-    <div style="background-color:#222930; font-family: 'Didact Gothic', sans-serif; font-size:14px; width: 100%; display: grid; grid-template-columns: auto; justify-items: center;">
+    <div style="font-family: 'Didact Gothic', sans-serif; font-size:14px; width: 100%; display: grid; grid-template-columns: auto; justify-items: center;">
       <h2 class="heading-section">Predict</h2>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/QMZcQujm0-4" frameborder="0"
+      <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/QMZcQujm0-4" frameborder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        <br><br>
+        <br><br> -->
         <div class="element">
           <p class="instructions">
-            Instructions: <br> <br>
+            <!-- Instructions: <br> <br>
             (i) In the first field (Images), select the images you would like to predict.<br><br>
             (ii) In the second field (Model), select the model (.h5 file) you would like to use to predict.<br><br>
             (iii) In the third field (Labels), enter the location of the labels (.dat file). <br><br>
-            The predicted images will be stored according to the labels, which can then be downloaded as a zip file.<br>
+            The predicted images will be stored according to the labels, which can then be downloaded as a zip file.<br> -->
             <form id="demo2" action="/" enctype="multipart/form-data" method="POST">
-              <br>
+           
               {{ testForm.hidden_tag() }}
               {{ testForm.images.label }} {{ testForm.images(webkitdirectory='true') }} <br><br>
               {{ testForm.model.label }} {{ testForm.model }}<br><br>
