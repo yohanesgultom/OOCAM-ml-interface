@@ -34,5 +34,5 @@ if exist %WINPYTHON_HOME% (
     echo,
 
     call %WINPYTHON_HOME%\scripts\env.bat 
-    pip install -r requirements.txt    
+    pip3 install -r requirements.txt    
 )
