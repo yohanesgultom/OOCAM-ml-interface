@@ -12,4 +12,7 @@ output
 
 .venv
 venv/
+WPy64*/
 *.out
+*.exe
+!curl/*.exe
