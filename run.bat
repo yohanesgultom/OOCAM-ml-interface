@@ -1,13 +1,10 @@
 @echo off
 
-if exist venv\Scripts\python.exe (
-	echo,
-	echo ------------------------------------------------------------------
-	echo Running with virtual environment
-	echo ------------------------------------------------------------------
-	echo,
+set WINPYTHON_HOME=WPy64-3770
+set PYTHON_HOME=%WINPYTHON_HOME%\python-3.7.7.amd64
+set PYTHON=%PYTHON_HOME%\python.exe
 
-	venv\Scripts\python.exe flaskInterface.py
-) else (
-    echo No virtual environment found. Please run installer.bat first
+if exist %WINPYTHON_HOME% (
+    call %WINPYTHON_HOME%\scripts\env.bat 
+    python flaskInterface.py
 )
