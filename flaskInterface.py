@@ -21,7 +21,7 @@ def index():
     trainForm = TrainForm()
     testForm = TestForm()
 
-    if trainForm.submit.data and trainForm.validate_on_submit():
+    if trainForm.submitTrain.data and trainForm.validate_on_submit():
         if request.method == "POST":
             if os.path.exists('temp'):
                 directoryUtils.rmtree("temp")
@@ -43,7 +43,7 @@ def index():
             w.close()
             return redirect(url_for('trainResults'))            
 
-    if testForm.submit.data and testForm.validate_on_submit():
+    if testForm.submitTest.data and testForm.validate_on_submit():
         if request.method == "POST":
             if os.path.exists('temp'):
                 directoryUtils.rmtree("temp")
@@ -64,16 +64,21 @@ def index():
             else:
                 return 'Invalid labels.'
 
-            for f in testForm.images.data:
-                if allowed_file(secure_filename(f.filename), ['jpeg', 'jpg', 'png']):
-                    f.save(os.path.join('temp', 'images', secure_filename(f.filename)))
+            # process based on source
+            print('Beginning handover to prediction script.')
+            if testForm.source.data == 'images':
+                for f in testForm.images.data:
+                    if allowed_file(secure_filename(f.filename), ['jpeg', 'jpg', 'png']):
+                        f.save(os.path.join('temp', 'images', secure_filename(f.filename)))
+                modelPredict.predict('temp')
+                directoryUtils.rmtree("temp")
+                return render_template("testResults.html")
 
-            print("Beginning handover to prediction script.")
-            modelPredict.predict()
-
-            directoryUtils.rmtree("temp")
-
-            return render_template("testResults.html")
+            elif testForm.source.data == 'path':
+                modelPredict.predict(testForm.path.data)
+                directoryUtils.rmtree("temp")            
+                testForm.messages = ['Prediction success. Images have been sorted in the same path']
+                return render_template("HTML_Interface.html", trainForm = TrainForm(), testForm = testForm)
 
     return render_template("HTML_Interface.html", trainForm = trainForm, testForm = testForm)
 
