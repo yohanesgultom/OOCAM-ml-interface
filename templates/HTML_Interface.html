@@ -1,81 +1,10 @@
-<!DOCTYPE html>
-<html>
-<meta name="viewport" content="width=device-width">
-<link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+{% extends 'base.html' %}
 
-<head>
-  <title> OOCAM ML Interface </title>
-  <style>
-    html{
-      width: 100%;
-      min-width: 640px;
-    }
-    .flex-container>div {
-      border-color: #4EB1BA;
-      border-style: solid;
-      border-radius: 15px;
-      border-width: 3px;
-      color: #4EB1BA;
-    }
+{% block header %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" type="text/css" />
+{% endblock %}
 
-    /* Clear floats after the columns */
-    .flex-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-column-gap: 40px;
-      justify-items: center;
-    }
-    .element {
-      width: 80%;
-      padding: 20px;
-    }
-    .heading-section{
-      font-family: 'PT Sans', sans-serif;
-      text-align:center;
-      color:#4EB1BA
-    }
-    .instructions {
-      font-family: 'Roboto Mono', monospace;
-    }
-    @media screen and (max-width: 1200px) {
-      .flex-container{
-        grid-template-columns: 1fr;
-      }
-    }
-    input{
-      background-color: #f0f0f0;
-      color: #4EB1BA;
-      border: 1px solid #4EB1BA;
-      height: 40px;
-      border-radius: 10px;
-      align-items: center;
-      text-align: center;
-    }
-    ul#source , ul#source li {
-      display: inline;
-      list-style: none;
-      padding-left: 0px;
-    }
-    ul#source li input[type=radio] {
-      height: auto;
-    }
-    form .errors {
-      color: red;
-    }
-    form .messages {
-      color: green;
-    }
-  </style>
-</head>
-
-<body>
-  <section
-    style="font-family: 'Didact Gothic', sans-serif; display: grid; justify-content: center;">
-    <h1 style="text-align:center;color:#4EB1BA;font-size:40px; font-weight:bold"> Open Ocean Camera Interface </h1>
-    <h4 style="text-align:center;color:#4EB1BA;"> Powered by Open Ocean Engineering Ltd. </h4>
-  </section>
+{% block content %}
   <br>
   <div class="flex-container" >
     <div style=" font-family: 'Didact Gothic', sans-serif; font-size:14px; width: 100%; display: grid; grid-template-columns: auto; justify-items: center;">
@@ -144,8 +73,8 @@
            
               {{ testForm.hidden_tag() }}
               {{ testForm.source.label }} {{ testForm.source }} <br><br>
-              {{ testForm.images.label }} {{ testForm.images(webkitdirectory='true') }} <br><br>
-              {{ testForm.path.label }} {{ testForm.path(placeholder='C:\\dataset\\test_images') }} <br><br>
+              <div>{{ testForm.images.label }} {{ testForm.images(webkitdirectory='true', class='prediction-source-option') }}<br><br></div>
+              <div>{{ testForm.path.label }} {{ testForm.path(placeholder='C:\\dataset\\test_images', class='prediction-source-option') }}<br><br></div>
               {{ testForm.model.label }} {{ testForm.model }}<br><br>
               {{ testForm.labels.label }} {{ testForm.labels }}<br><br>
 
@@ -178,6 +107,5 @@
         </div>
     </div>
   </div>
-</body>
-
-</html>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/index.js') }}"></script>
+{% endblock %}

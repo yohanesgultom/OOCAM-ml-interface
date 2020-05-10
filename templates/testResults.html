@@ -1,14 +1,36 @@
-<html>
-	<head>
-		<title>Prediction Results</title>
-	</head>
-	
-	<body>
-		<p>Predictions were made and saved in the "predictions" folder in the ZIP file (see below).</p> 
+{% extends 'base.html' %}
 
-		<p>Click the button below to start a download of the ZIP file containing your predictions.</p>
-		<form action = "{{ url_for('download', folder = 'predictions') }}">
-			<input type = "submit" value = "Download" />
-		</form>
-	</body>
-</html>
+{% block title %}Prediction Results | {% endblock %}
+
+{% block header %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/results.css') }}" type="text/css" />
+{% endblock %}
+
+{% block content %}
+
+<h3>Progress</h3>
+<div style="background-color:#f1f1f1">
+    <div id="progress-bar-1" style="text-align:center;background-color:#4EB1BA;color:#fff;width:0%">0%</div>
+</div>
+
+<div id="completed-message-images" class="hidden">	
+	<p>Predictions were made and saved in the "predictions" folder in the ZIP file (see below).</p> 
+	<p>Click the button below to start a download of the ZIP file containing your predictions.</p>
+	<form action = "{{ url_for('download', folder = 'predictions') }}">
+		<input type = "submit" value = "Download" />
+	</form>
+</div>
+
+<div id="completed-message-path" class="hidden">	
+	<p>Predictions were succesfully made and saved in <span style="color:#4EB1BA" class="output-path">...</span>.</p> 
+</div>
+
+<!-- Logs -->
+<h3>Logs</h3>
+<div class="logs-container"><pre id="logs">Loading logs..</pre></div>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/results.js') }}"></script>
+<script>
+loadPredictResults();
+</script>
+{% endblock %}

@@ -1,0 +1,53 @@
+html {
+    width: 100%;
+    min-width: 640px;
+}
+
+.flex-container>div {
+    border-color: #4EB1BA;
+    border-style: solid;
+    border-radius: 15px;
+    border-width: 3px;
+    color: #4EB1BA;
+}
+
+
+/* Clear floats after the columns */
+
+.flex-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 40px;
+    justify-items: center;
+}
+
+.element {
+    width: 80%;
+    padding: 20px;
+}
+
+.heading-section {
+    font-family: 'PT Sans', sans-serif;
+    text-align: center;
+    color: #4EB1BA
+}
+
+.instructions {
+    font-family: 'Roboto Mono', monospace;
+}
+
+@media screen and (max-width: 1200px) {
+    .flex-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+input {
+    background-color: #f0f0f0;
+    color: #4EB1BA;
+    border: 1px solid #4EB1BA;
+    height: 40px;
+    border-radius: 10px;
+    align-items: center;
+    text-align: center;
+}

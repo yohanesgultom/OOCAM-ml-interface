@@ -9,6 +9,8 @@ app = Flask(__name__)
 csrf = CSRFProtect(app)
 
 LOG_FILE_TRAIN = 'trainModel.out'
+LOG_FILE_TEST = 'testModel.out'
+
 with open('secret_key.dat', 'r') as f:
     k = json.load(f)
     app.secret_key = k['SECRET_KEY']
@@ -66,19 +68,21 @@ def index():
 
             # process based on source
             print('Beginning handover to prediction script.')
+            images_dir_path = None
             if testForm.source.data == 'images':
                 for f in testForm.images.data:
                     if allowed_file(secure_filename(f.filename), ['jpeg', 'jpg', 'png']):
                         f.save(os.path.join('temp', 'images', secure_filename(f.filename)))
-                modelPredict.predict('temp')
-                directoryUtils.rmtree("temp")
-                return render_template("testResults.html")
-
+                images_dir_path = 'temp'
             elif testForm.source.data == 'path':
-                modelPredict.predict(testForm.path.data)
-                directoryUtils.rmtree("temp")            
-                testForm.messages = ['Prediction success. Images have been sorted in the same path']
-                return render_template("HTML_Interface.html", trainForm = TrainForm(), testForm = testForm)
+                images_dir_path = testForm.path.data
+            if os.path.isfile(LOG_FILE_TEST):
+                os.remove(LOG_FILE_TEST)
+            w = open(LOG_FILE_TEST, 'w+')
+            cmd = ['python', '-u', 'modelPredict.py', images_dir_path]
+            subprocess.Popen(cmd, stdout=w, stderr=subprocess.STDOUT)
+            w.close()
+            return redirect(url_for('testResults')) 
 
     return render_template("HTML_Interface.html", trainForm = trainForm, testForm = testForm)
 
@@ -89,6 +93,11 @@ def download(folder):
 @app.route('/trainResults')
 def trainResults():
     return render_template("trainResults.html")
+
+@app.route('/testResults')
+def testResults():
+    return render_template("testResults.html")
+
 @app.route('/results/<process>')
 def result_data(process):
     res = {}
@@ -96,6 +105,8 @@ def result_data(process):
         outFile = None
         if process == 'train':
             outFile = LOG_FILE_TRAIN
+        elif process == 'test':
+            outFile = LOG_FILE_TEST
         else:
             return f'Unknown process type: {process}', status.HTTP_400_BAD_REQUEST        
         with open(outFile, 'r') as f:
@@ -120,10 +131,17 @@ def result_data(process):
                     res['model_list'] = modelList
                     if os.path.isdir('temp'):
                         directoryUtils.rmtree("temp")
+            # test results
+            elif process == 'test':
+                if lastLine and lastLine.strip().lower().startswith('image output complete'):
+                    if os.path.isdir('temp'):
+                        directoryUtils.rmtree("temp")
 
     return jsonify(res)
+
 if __name__ == '__main__':
     import webbrowser, threading
     port = 5000
     threading.Timer(2, lambda: webbrowser.open(f'http://localhost:{port}')).start()
-    app.run(port = port, debug = False)
+    debug = os.getenv('FLASK_DEBUG') == '1'
+    app.run(port = port, debug = debug)

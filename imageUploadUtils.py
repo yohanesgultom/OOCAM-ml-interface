@@ -33,10 +33,12 @@ def getAllPredictImages(directory, dim=(256, 256), subdir=None):
 
     print("Beginning image read and resize process.")
     for file in allFiles:
-        img = cv2.imread(os.path.join(directory, file)) 
-        resized = cv2.resize(img, dim)
-        images.append(resized)
-        names.append(file)
+        full_path = os.path.join(directory, file)
+        if os.path.isfile(full_path):
+            img = cv2.imread(full_path) 
+            resized = cv2.resize(img, dim)
+            images.append(resized)
+            names.append(file)
     
     print("Read and resize complete.")
     return np.array(images), names

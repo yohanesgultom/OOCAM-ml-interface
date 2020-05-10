@@ -55,3 +55,12 @@ def predict(images_dir_path='temp'):
             cv2.imwrite(os.path.join(output_dir, category, imageNames[i]), oldImages[i])
 
     print("Image output complete.")
+
+if __name__ == '__main__':
+    import sys
+    if len(sys.argv) != 2:
+        print('usage: python modelPredict.py {imagesDir}')
+        sys.exit(0)
+    imagesDir = sys.argv[1]
+    print(f'images_dir_path={imagesDir}')
+    predict(images_dir_path=imagesDir)

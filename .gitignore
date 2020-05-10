@@ -12,6 +12,7 @@ output
 
 .venv
 venv/
+.vscode/
 WPy64*/
 *.out
 *.exe

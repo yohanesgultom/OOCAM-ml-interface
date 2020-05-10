@@ -1,0 +1,30 @@
+ul#source,
+ul#source li {
+    display: inline;
+    list-style: none;
+    padding-left: 0px;
+}
+
+ul#source li input[type=radio] {
+    height: auto;
+}
+
+form .errors {
+    color: red;
+}
+
+form .messages {
+    color: green;
+}
+
+.toggle-content {
+    display: none;
+    height: 0;
+    overflow: hidden;
+    transition: height 350ms ease-in-out;
+}
+
+.toggle-content.is-visible {
+    display: block;
+    height: auto;
+}
